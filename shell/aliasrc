@@ -1,0 +1,7 @@
+alias vim="nvim"
+alias v="nvim"
+alias t="tmux"
+alias ta="tmux attach"
+alias td="tmux detach"
+alias tk="tmux kill-pane"
+alias ping="ping -c 5"
