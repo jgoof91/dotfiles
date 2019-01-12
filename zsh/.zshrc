@@ -96,6 +96,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 # Set up the prompt
 cd $HOME
+#export LC_ALL="en_US.UTC-8"
 EDITOR='nvim'
 VISUAL='nvim'
 alias vim="nvim"
