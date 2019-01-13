@@ -8,6 +8,11 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
+#set up envronment variables
+if [ -f "${HOME}/.envrc" ]; then
+    . "${HOME}/.envrc"
+fi
+
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
