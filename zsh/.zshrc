@@ -96,7 +96,6 @@ export LANG=en_US.UTF-8
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 # Set up the prompt
 cd $HOME
-#export LC_ALL="en_US.UTC-8"
 if [ -f "${HOME}/.profile" ]; then
         . "${HOME}/.profile"
 fi
