@@ -16,8 +16,6 @@ Plug 'Valloric/YouCompleteMe'
 call plug#end()
 
 syntax on
-set background=dark
-colorscheme solarized
 filetype plugin indent on
 
 set termguicolors
@@ -27,7 +25,20 @@ set wrap breakindent
 set encoding=utf-8
 set number relativenumber
 set splitbelow  splitright
+set hlsearch incsearch
 set title
+
+if has('unix')     
+        set background=dark
+        colorscheme solarized 
+endif 
+if has('win64') || has('win32')     
+        set backspace=indent,eol,start     
+        set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe     
+        set shellcmdFlag=-command     
+        set shellquote=\"     
+        set shellxquote= 
+endif
 
 """Highlight for Pmenu
 highlight Pmenu guibg=brown gui=bold
@@ -91,12 +102,12 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 
 """
+autocmd VimResized * wincmd =
 let &winheight = &lines * 7 / 10
-"""autocmd VimResized * wincmd =
-"""autocmd WinEnter * resize:let &winheight = &lines * 7 / 10
+let &winwidth = &columns * 7 / 10
 
 """Mapping for leader
-let mapleader="\<SPACE>"
+let mapleader="<SPACE>"
 """Split Windows Mappings
 nnoremap <C-H> <C-W><C-H>
 nnoremap <C-J> <C-W><C-J>

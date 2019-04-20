@@ -11,10 +11,12 @@ export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_DATA_HOME="${HOME}/.local/share"
 export XDG_DATA_DIRS="/usr/local/share:/usr/share/"
 
-# if running bash
-if [ -n "${BASH_VERSION}" ]; then
-    # include .bashrc if it exists
-    if [ -f "${HOME}/.bashrc" ]; then
-	    . "${HOME}/.bashrc"
+export KEYTIMEOUT=1
+
+# if running zsh
+if [ -n "${ZSH_VERSION}" ]; then
+    # include .zshrc if it exists
+    if [ -f "${HOME}/.zshrc"  ]; then
+        . "${HOME}/.zshrc"
     fi
 fi
