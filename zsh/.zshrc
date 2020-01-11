@@ -20,8 +20,7 @@ bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
 bindkey '^w' backward-kill-word
 bindkey '^r' history-incremental-search-backward
-bindkey -M vicmd v edit-command-line
-bindkey -M vicmd '^v' edit-command-line
+bindkey '^e' edit-command-line
 
 function zle-keymap-select() {
     zle reset-prompt

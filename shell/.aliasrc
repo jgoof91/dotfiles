@@ -1,3 +1,6 @@
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 alias vim="nvim"
 alias v="nvim"
 alias t="tmux"
@@ -5,5 +8,7 @@ alias ta="tmux attach"
 alias td="tmux detach"
 alias tk="tmux kill-pane"
 alias ping="ping -c 5"
-alias upgrade="sudo apt-get update && sudo apt-get upgrade && sudo apt-get autoremove"
+alias upgrade="[ $EUID -eq '0' ] && echo 'superuser powers need'; sudo apt-get update && sudo apt-get upgrade && sudo apt-get autoremove"
 alias search="apt-cache search"
+alias push="${HOME}/mover push"
+alias pull="${HOME}/mover pull"

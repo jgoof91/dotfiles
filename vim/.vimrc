@@ -10,6 +10,8 @@ call  plug#end()
                                                                        
 syntax on                                                              
 filetype plugin indent on                                              
+set nocompatible
+set autoread
 set tabstop=4 softtabstop=4 expandtab smarttab autoindent              
 set ruler laststatus=2 showcmd showmode                                
 set wrap breakindent                                                   
@@ -19,6 +21,7 @@ set splitbelow splitright
 set hlsearch incsearch wildmenu                                        
 set backspace=indent,eol,start                                         
 set title                                                              
+set path+=** wildmenu
                                                                        
 highlight Pmenu guibg=brown gui=bold                                   
 highlight Pmenu ctermbg=gray gui=bold                                  
@@ -42,6 +45,11 @@ let g:airline_theme='solarized'
 let &winheight = &lines * 7 / 10  
 
 let mapleader="<SPACE>"                                                
+inoremap ^F ^X^F
+nnoremap j gj
+nnoremap k gk
+nnoremap ; :
+nnoremap <F4> :so $MYVIMRC
 nnoremap <C-H> <C-W><C-H>                                              
 nnoremap <C-J> <C-W><C-J>                                              
 nnoremap <C-K> <C-W><C-K>                                              
