@@ -3,6 +3,7 @@ export EDITOR="nvim"
 export VISUAL="${EDITOR}"
 export GIT_EDITOR="${EDITOR}"
 export BROWSER="/c/Program Files/Mozilla Firefox/firefox.exe"
+export STOW_DIR=~/.dotfiles
 
 #The XDG env vars
 export XDG_CONFIG_HOME="${HOME}/.config"

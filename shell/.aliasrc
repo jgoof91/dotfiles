@@ -1,8 +1,8 @@
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-alias vim="nvim"
-alias v="nvim"
+alias vim="${EDITOR}"
+alias v="${EDITOR}"
 alias t="tmux"
 alias ta="tmux attach"
 alias td="tmux detach"
