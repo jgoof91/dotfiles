@@ -33,20 +33,33 @@ set wildmenu
 "set textwidth=80 
 set colorcolumn=
 
-if $TERM == "xterm-256color" || $TERM == "screen-256color" || $TERM == "tmux-256color"
-    set t_Co=256
-    colo light
+if has('unix')     
+        set background=dark
+        colorscheme solarized 
+endif 
+if has('win64') || has('win32')     
+        set backspace=indent,eol,start     
+        set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe     
+        set shellcmdFlag=-command     
+        set shellquote=\"     
+        set shellxquote= 
 endif
+
+"""Highlight for Pmenu
+highlight Pmenu guibg=brown gui=bold
+highlight Pmenu ctermbg=gray gui=bold
 
 "Clear the over 80 char red highligths and replace it with red char
 hi clear OverLength
 hi OverLength term=underline ctermfg=9 guifg=Magenta 
 
-"Resizing the the all panes 
+autocmd VimResized * wincmd =
 let &winheight = &lines * 7 / 10
 let &winwidth = &columns * 7 / 10
 
-let mapleader=","
+"""Mapping for leader
+let mapleader="<SPACE>"
+"""Split Windows Mappings
 nnoremap <C-H> <C-W><C-H>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
