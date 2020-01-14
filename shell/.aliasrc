@@ -12,3 +12,12 @@ alias upgrade="[ $EUID -eq '0' ] && echo 'superuser powers need'; sudo apt-get u
 alias search="apt-cache search"
 alias push="${HOME}/mover push"
 alias pull="${HOME}/mover pull"
+
+
+for editor in nvim vim vi nano; do
+        if command -v "${editor}" >/dev/null; then
+                alias v="${editor}"
+                alias vim="${editor}"
+                break;
+        fi
+done
