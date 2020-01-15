@@ -1,6 +1,7 @@
 export LANG="en_US.UTF-8"
 export BROWSER="/c/Program Files/Mozilla Firefox/firefox.exe"
 export STOW_DIR=~/.dotfiles
+export MYVIMRC=~/.vimrc
 
 #The XDG env vars
 export XDG_CONFIG_HOME="${HOME}/.config"
