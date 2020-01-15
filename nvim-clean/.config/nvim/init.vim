@@ -33,10 +33,6 @@ set wildmenu
 "set textwidth=80 
 set colorcolumn=
 
-if has('unix')     
-        set background=dark
-        colorscheme solarized 
-endif 
 if has('win64') || has('win32')     
         set backspace=indent,eol,start     
         set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe     

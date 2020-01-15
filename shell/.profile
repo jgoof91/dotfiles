@@ -18,8 +18,3 @@ for editor in nvim vim vi nano; do
                 break;
         fi
 done
-
-# if running zsh
-if [ -n "${ZSH_VERSION}" ]; then
-        export USER_SHELL="ZSH"
-fi

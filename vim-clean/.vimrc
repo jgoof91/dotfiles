@@ -32,11 +32,7 @@ set path+=**
 set wildmenu
 "set textwidth=80 
 set colorcolumn=
-
-if $TERM == "xterm-256color" || $TERM == "screen-256color" || $TERM == "tmux-256color"
-    set t_Co=256
-    colo light
-endif
+set t_Co=256
 
 "Clear the over 80 char red highligths and replace it with red char
 hi clear OverLength

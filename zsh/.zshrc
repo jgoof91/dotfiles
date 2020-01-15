@@ -38,3 +38,5 @@ RPS1="$(vi-mode-prompt_info)"
 RPS2="${RPS1}"
 
 cd "${HOME}"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

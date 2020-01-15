@@ -17,6 +17,7 @@ alias pull="${HOME}/mover pull"
 for editor in nvim vim vi nano; do
         if command -v "${editor}" >/dev/null; then
                 alias v="${editor}"
+                alias vi="${editor}"
                 alias vim="${editor}"
                 break;
         fi
