@@ -7,15 +7,32 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-endwise'
+Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+Plug 'AndrewRadev/splitjoin.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'airblade/vim-gitgutter'
 Plug 'ervandew/supertab'
-Plug 'altercation/vim-colors-solarized'
-Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-syntastic/syntastic'
+Plug 'Valloric/YouCompleteMe'
+Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
+
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'Valloric/YouCompleteMe'
+
+Plug 'altercation/vim-colors-solarized'
+Plug 'tomasr/molokai' 
+Plug 'chriskempson/vim-tomorrow-theme' 
+Plug 'morhetz/gruvbox' 
+Plug 'yuttie/hydrangea-vim' 
+Plug 'tyrannicaltoucan/vim-deep-space' 
+Plug 'AlessandroYorba/Despacio' 
+Plug 'cocopon/iceberg.vim' 
+Plug 'w0ng/vim-hybrid' 
+Plug 'nightsense/snow' 
+Plug 'nightsense/stellarized' 
+Plug 'arcticicestudio/nord-vim' 
+Plug 'nightsense/cosmic_latte'
 call plug#end()
 
 syntax on
@@ -48,13 +65,13 @@ set visualbell
 set noerrorbells
 set path+=** 
 set wildmenu
-set colorcolumn=
+set colorcolumn=80
 set t_Co=256
 "set textwidth=80 
 
 if has('win64') || has('win32')     
         set backspace=indent,eol,start     
-        set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe     
+        set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe 
         set shellcmdFlag=-command     
         set shellquote=\"     
         set shellxquote= 
@@ -62,7 +79,7 @@ endif
 
 if has('unix')     
     set background=dark
-    colorscheme solarized 
+    colo solarized 
     hi clear OverLength
     hi OverLength term=underline ctermfg=9 guifg=Magenta 
 endif 
@@ -111,8 +128,6 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 """YCM
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:ycm_server_keep_log = 1
-let g:ycm_server_log_level = 'debug'
 
 """Ultisnips
 let g:UltiSnipsExpandTrigger = "<Tab>"
