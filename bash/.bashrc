@@ -53,7 +53,7 @@ dotfiles() {
             git pull
             ;;
         [pP]ush)
-            git push -u master orgin
+            git push
             ;;
         [cC]ommit)
             git add .
