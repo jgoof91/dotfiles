@@ -15,6 +15,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ervandew/supertab'
 Plug 'vim-syntastic/syntastic'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
+Plug 'w0rp/ale'
 
 if has('python') | has('python3')
     Plug 'Valloric/YouCompleteMe'
@@ -154,6 +155,9 @@ autocmd VimResized * wincmd =
 let &winheight = &lines * 7 / 10
 let &winwidth = &columns * 7 / 10
 
+"Shebang
+inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype)
+
 """Mapping for leader
 let mapleader="<SPACE>"
 """Split Windows Mappings
@@ -165,10 +169,19 @@ nnoremap ; :
 nnoremap <C-C> <C-V>
 nnoremap j gj
 nnoremap k gk
-inoremap <C-F> <C-X><C-F>
 nnoremap <C-G><C-T> :tabe<CR>:ter ++curwin<CR>
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 nnoremap <F4> :so $MYVIMRC<CR>
+inoremap <C-F> <C-X><C-F>
+"Save mappings
+nnoremap <C-s> :w<CR>
+inoremap <C-s> <ESC>:w<CR>li
+"Buffer mappings
+nnoremap [b :bprev<CR>
+nnoremap ]b :bnext<CR>
+"Tab mappings
+nnoremap [t :tabp<CR>
+nnoremap ]t :tabn<CR>
 
 """Plugin Mappings
 nnoremap <Leader>f :NERDTreeToggle<CR>

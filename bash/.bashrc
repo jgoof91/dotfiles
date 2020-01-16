@@ -69,6 +69,10 @@ dotfiles() {
     popd >/dev/null
 }
 
+viw() {
+    vim "$(which "${1}")"
+}
+
 cd
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
