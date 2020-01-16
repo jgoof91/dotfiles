@@ -17,7 +17,7 @@ Plug 'vim-syntastic/syntastic'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
 
-if has('python') | has('python3')
+if has('python3')
     Plug 'Valloric/YouCompleteMe'
     Plug 'SirVer/ultisnips'
 endif
@@ -38,8 +38,6 @@ Plug 'nightsense/stellarized'
 Plug 'arcticicestudio/nord-vim'
 Plug 'nightsense/cosmic_latte'
 call plug#end()
-
-syntax on
 
 set termguicolors
 set tabstop=4
@@ -73,6 +71,10 @@ set colorcolumn=80
 set t_Co=256
 "set textwidth=80
 
+syntax enable
+set background=dark
+colo solarized
+
 if has('win64') || has('win32')
         set backspace=indent,eol,start
         set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
@@ -82,8 +84,6 @@ if has('win64') || has('win32')
 endif
 
 if has('unix')
-    set background=dark
-    colo solarized
     hi clear OverLength
     hi OverLength term=underline ctermfg=9 guifg=Magenta
 endif
@@ -129,7 +129,7 @@ let g:syntastic_sh_shellcheck_exec = 'shellcheck'
 """SuperTab
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
-if has('python') | has('python3')
+if has('python3')
 """YCM
     let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
     let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
