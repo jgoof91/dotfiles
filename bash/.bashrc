@@ -60,7 +60,7 @@ dotfiles() {
             git commit -m "${@}"
             ;;
         [cC]lone)
-            git clone git://github.com/jgoof91/dotfiles.git ~/.dotfiles
+            git clone https://github.com/jgoof91/dotfiles ~/.dotfiles
             ;;
         *)
             printf "dotfiles [pull|push|commit]\n"
