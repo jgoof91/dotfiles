@@ -1,5 +1,6 @@
 export LANG="en_US.UTF-8"
 export BROWSER="/c/Program Files/Mozilla Firefox/firefox.exe"
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export STOW_DIR=~/.dotfiles
 
 #The XDG env vars

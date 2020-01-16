@@ -14,75 +14,78 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'airblade/vim-gitgutter'
 Plug 'ervandew/supertab'
 Plug 'vim-syntastic/syntastic'
-Plug 'Valloric/YouCompleteMe'
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 
-Plug 'SirVer/ultisnips'
+if has('python') | has('python3')
+    Plug 'Valloric/YouCompleteMe'
+    Plug 'SirVer/ultisnips'
+endif
+
 Plug 'honza/vim-snippets'
 
 Plug 'altercation/vim-colors-solarized'
-Plug 'tomasr/molokai' 
-Plug 'chriskempson/vim-tomorrow-theme' 
-Plug 'morhetz/gruvbox' 
-Plug 'yuttie/hydrangea-vim' 
-Plug 'tyrannicaltoucan/vim-deep-space' 
-Plug 'AlessandroYorba/Despacio' 
-Plug 'cocopon/iceberg.vim' 
-Plug 'w0ng/vim-hybrid' 
-Plug 'nightsense/snow' 
-Plug 'nightsense/stellarized' 
-Plug 'arcticicestudio/nord-vim' 
+Plug 'tomasr/molokai'
+Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'morhetz/gruvbox'
+Plug 'yuttie/hydrangea-vim'
+Plug 'tyrannicaltoucan/vim-deep-space'
+Plug 'AlessandroYorba/Despacio'
+Plug 'cocopon/iceberg.vim'
+Plug 'w0ng/vim-hybrid'
+Plug 'nightsense/snow'
+Plug 'nightsense/stellarized'
+Plug 'arcticicestudio/nord-vim'
 Plug 'nightsense/cosmic_latte'
 call plug#end()
 
 syntax on
 
 set termguicolors
-set tabstop=4 
-set softtabstop=4 
-set shiftwidth=4 
-set expandtab 
-set smarttab 
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set smarttab
 set autoindent
-set ruler 
-set laststatus=2 
-set showcmd 
+set ruler
+set laststatus=2
+set showcmd
 set showmode
-set wrap 
-set breakindent 
-set linebreak 
+set wrap
+set breakindent
+set linebreak
 set encoding=utf-8
-set number 
+set number
 set relativenumber
-set splitbelow 
+set splitbelow
 set splitright
 set hlsearch
 set incsearch
-set title 
-set undolevels=1000 
-set history=1000 
-set visualbell 
+set title
+set undolevels=1000
+set history=1000
+set visualbell
 set noerrorbells
-set path+=** 
+set path+=**
 set wildmenu
 set colorcolumn=80
 set t_Co=256
-"set textwidth=80 
+"set textwidth=80
 
-if has('win64') || has('win32')     
-        set backspace=indent,eol,start     
-        set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe 
-        set shellcmdFlag=-command     
-        set shellquote=\"     
-        set shellxquote= 
+if has('win64') || has('win32')
+        set backspace=indent,eol,start
+        set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+        set shellcmdFlag=-command
+        set shellquote=\"
+        set shellxquote=
 endif
 
-if has('unix')     
+if has('unix')
     set background=dark
-    colo solarized 
+    colo solarized
     hi clear OverLength
-    hi OverLength term=underline ctermfg=9 guifg=Magenta 
-endif 
+    hi OverLength term=underline ctermfg=9 guifg=Magenta
+endif
 
 """NERDTree
 let NERDTreeShowHidden=1
@@ -125,15 +128,17 @@ let g:syntastic_sh_shellcheck_exec = 'shellcheck'
 """SuperTab
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
+if has('python') | has('python3')
 """YCM
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+    let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+    let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 
 """Ultisnips
-let g:UltiSnipsExpandTrigger = "<Tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-"let g:UltiSnipsEditSplit = "vertical"
+    let g:UltiSnipsExpandTrigger = "<Tab>"
+    let g:UltiSnipsJumpForwardTrigger = "<tab>"
+    let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+    "let g:UltiSnipsEditSplit = "vertical"
+endif
 
 """Highlight for Pmenu
 highlight Pmenu guibg=brown gui=bold
@@ -141,8 +146,10 @@ highlight Pmenu ctermbg=gray gui=bold
 
 "Clear the over 80 char red highligths and replace it with red char
 hi clear OverLength
-hi OverLength term=underline ctermfg=9 guifg=Magenta 
+hi OverLength term=underline ctermfg=9 guifg=Magenta
 
+" autocmd
+autocmd FileType sh nnoremap <buffer> <C-b> i"${}"<ESC>hi
 autocmd VimResized * wincmd =
 let &winheight = &lines * 7 / 10
 let &winwidth = &columns * 7 / 10
