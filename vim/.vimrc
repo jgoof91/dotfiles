@@ -1,43 +1,54 @@
 set modelines=0 nomodeline nocompatible
-filetype plugin indent on
 
-call plug#begin()
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/nerdcommenter'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-endwise'
-Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'airblade/vim-gitgutter'
-Plug 'ervandew/supertab'
-Plug 'vim-syntastic/syntastic'
-Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-Plug 'w0rp/ale'
+silent! if plug#begin()
+    call plug#begin()
+        Plug 'scrooloose/nerdtree'
+        Plug 'scrooloose/nerdcommenter'
+        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
+        Plug 'tpope/vim-surround'
+        Plug 'tpope/vim-repeat'
+        Plug 'tpope/vim-endwise'
+        Plug 'tpope/vim-fugitive'
+        Plug 'tpope/vim-rhubarb'
+        Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+        Plug 'AndrewRadev/splitjoin.vim'
+        Plug 'terryma/vim-multiple-cursors'
+        Plug 'airblade/vim-gitgutter'
+        Plug 'vim-syntastic/syntastic'
+        Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
+        Plug 'honza/vim-snippets'
+        Plug 'w0rp/ale'
+        Plug 'neoclide/coc.nvim', {'branch': 'release'}
+        Plug 'liuchengxu/vista.vim'
+        Plug 'puremourning/vimspector'
+        Plug 'mhinz/vim-startify'
 
-if has('python3')
-    Plug 'Valloric/YouCompleteMe'
-    Plug 'SirVer/ultisnips'
+        Plug 'Yggdroot/indentLine', {'on': 'IndentLinesEnable'}
+
+        if has('python3')
+            Plug 'python-mode / python-mode'
+            Plug 'Valloric/YouCompleteMe'
+            Plug 'SirVer/ultisnips'
+        endif
+
+        Plug 'altercation/vim-colors-solarized'
+        Plug 'tomasr/molokai'
+        Plug 'chriskempson/vim-tomorrow-theme'
+        Plug 'morhetz/gruvbox'
+        Plug 'yuttie/hydrangea-vim'
+        Plug 'tyrannicaltoucan/vim-deep-space'
+        Plug 'AlessandroYorba/Despacio'
+        Plug 'cocopon/iceberg.vim'
+        Plug 'w0ng/vim-hybrid'
+        Plug 'nightsense/snow'
+        Plug 'nightsense/stellarized'
+        Plug 'arcticicestudio/nord-vim'
+        Plug 'nightsense/cosmic_latte'
+    call plug#end()
 endif
 
-Plug 'honza/vim-snippets'
-
-Plug 'altercation/vim-colors-solarized'
-Plug 'tomasr/molokai'
-Plug 'chriskempson/vim-tomorrow-theme'
-Plug 'morhetz/gruvbox'
-Plug 'yuttie/hydrangea-vim'
-Plug 'tyrannicaltoucan/vim-deep-space'
-Plug 'AlessandroYorba/Despacio'
-Plug 'cocopon/iceberg.vim'
-Plug 'w0ng/vim-hybrid'
-Plug 'nightsense/snow'
-Plug 'nightsense/stellarized'
-Plug 'arcticicestudio/nord-vim'
-Plug 'nightsense/cosmic_latte'
-call plug#end()
+filetype plugin indent on
+syntax enable
 
 set termguicolors
 set tabstop=4
@@ -69,14 +80,14 @@ set path+=**
 set wildmenu
 set colorcolumn=80
 set t_Co=256
+set hidden
+set backspace=indent,eol,start
 "set textwidth=80
 
-syntax enable
 set background=dark
 colo solarized
 
 if has('win64') || has('win32')
-        set backspace=indent,eol,start
         set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
         set shellcmdFlag=-command
         set shellquote=\"
@@ -88,7 +99,16 @@ if has('unix')
     hi OverLength term=underline ctermfg=9 guifg=Magenta
 endif
 
+"""autocmd
+autocmd StdinReadPre * let g:IsReadingFromStdin = 1
+autocmd VimEnter * nested if !argc() && !exists('g:isReadingFromStdin') | Startify | endif
+autocmd VimEnter * nested if !argc() && !exists('g:isReadingFromStdin') | NERDTree | endif
+
 """NERDTree
+autocmd vimenter * silent! NERDTree
+autocmd bufenter * if (winnr('$') == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let NERDTreeIngore = ['\.pyc$', '\.pyo$', '__pycache__$', '\.gitingore']
+let NERDTreeWinSize = 20
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = '>'
 let g:NERDTreeDirArrowCollapsible = '<'
@@ -104,11 +124,16 @@ let g:NERDTrimTrailingWhitespace = 1
 let g:NERDToggleCheckAllLines = 1
 
 """Airline config
+let g:airline_statusline_ontop = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = '|'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline_theme='solarized'
+
+"""Ale
+let g:ale_sign_column_always = 1
+let g:airline#extensions#ale#enabled = 1
 
 """Syntastic config
 set statusline+=%#warningmsg#
@@ -126,9 +151,6 @@ let g:syntastic_python_checkers = ['flake8', 'python']
 let g:syntastic_sh_shellcheck_exec = 'shellcheck'
 """let g:syntastic_sh_shellcheck_args = '-e 2064,2086,2139,2155'
 
-"""SuperTab
-let g:SuperTabDefaultCompletionType = '<C-n>'
-
 if has('python3')
 """YCM
     let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -140,6 +162,9 @@ if has('python3')
     let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
     "let g:UltiSnipsEditSplit = "vertical"
 endif
+
+"""IndentLine
+autocmd! User indentLine doautocmd indentLine Syntax
 
 """Highlight for Pmenu
 highlight Pmenu guibg=brown gui=bold
@@ -159,7 +184,7 @@ let &winwidth = &columns * 7 / 10
 inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype)
 
 """Mapping for leader
-let mapleader="<SPACE>"
+let mapleader=","
 """Split Windows Mappings
 nnoremap <C-H> <C-W><C-H>
 nnoremap <C-J> <C-W><C-J>
@@ -184,5 +209,16 @@ nnoremap [t :tabp<CR>
 nnoremap ]t :tabn<CR>
 
 """Plugin Mappings
+inoremap <silent><expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ?  "\<C-p>" : "\<C-h>"
 nnoremap <Leader>f :NERDTreeToggle<CR>
-nnoremap ; :Files<CR>
+nnoremap <Leader>; :Files<CR>
+
+"""Function
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1] =~# '\s'
+endfunction
