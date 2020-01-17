@@ -85,7 +85,7 @@ set backspace=indent,eol,start
 "set textwidth=80
 
 set background=dark
-colo solarized
+silent! colo solarized
 
 if has('win64') || has('win32')
         set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
@@ -101,8 +101,8 @@ endif
 
 """autocmd
 autocmd StdinReadPre * let g:IsReadingFromStdin = 1
-autocmd VimEnter * nested if !argc() && !exists('g:isReadingFromStdin') | Startify | endif
-autocmd VimEnter * nested if !argc() && !exists('g:isReadingFromStdin') | NERDTree | endif
+autocmd VimEnter * nested if !argc() && !exists('g:isReadingFromStdin') | silent! Startify | endif
+autocmd VimEnter * nested if !argc() && !exists('g:isReadingFromStdin') | silent! NERDTree | endif
 
 """NERDTree
 autocmd vimenter * silent! NERDTree

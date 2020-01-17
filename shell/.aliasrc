@@ -12,7 +12,18 @@ alias upgrade="[ $EUID -eq '0' ] && echo 'superuser powers need'; sudo apt-get u
 alias search="apt-cache search"
 alias push="${HOME}/mover push"
 alias pull="${HOME}/mover pull"
+alias rule="sudo nft list ruleset"
+alias failed='grep -hi 'invalid' /var/log/auth.log'
+alias dps='docker ps'
 
+#open config files
+alias vb="${EDITOR} ${HOME}/.bashrc"
+alias vp="${EDITOR} ${HOME}/.profile"
+alias vv="${EDITOR} ${HOME}/.vimrc"
+alias va="$EDITOR} ${HOME}/.aliasrc"
+
+#git
+alias gc="git add . && git commit -m "
 
 for editor in nvim vim vi nano; do
         if command -v "${editor}" >/dev/null; then
