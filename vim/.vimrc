@@ -14,7 +14,6 @@ silent! if plug#begin()
         Plug 'AndrewRadev/splitjoin.vim'
         Plug 'terryma/vim-multiple-cursors'
         Plug 'airblade/vim-gitgutter'
-        Plug 'vim-syntastic/syntastic'
         Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
         Plug 'honza/vim-snippets'
         Plug 'w0rp/ale'
@@ -88,10 +87,10 @@ set background=dark
 silent! colo solarized
 
 if has('win64') || has('win32')
-        set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
-        set shellcmdFlag=-command
-        set shellquote=\"
-        set shellxquote=
+    set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+    set shellcmdFlag=-command
+    set shellquote=\"
+    set shellxquote=
 endif
 
 if has('unix')
@@ -99,14 +98,16 @@ if has('unix')
     hi OverLength term=underline ctermfg=9 guifg=Magenta
 endif
 
-"""autocmd
-autocmd StdinReadPre * let g:IsReadingFromStdin = 1
-autocmd VimEnter * nested if !argc() && !exists('g:isReadingFromStdin') | silent! Startify | endif
-autocmd VimEnter * nested if !argc() && !exists('g:isReadingFromStdin') | silent! NERDTree | endif
+"""Startup for Startify and NERDTree
+autocmd StdinReadPre * let s:std_in = 1
+autocmd VimEnter * nested if !argc() && !exists('s:std_in') | silent! Startify |silent! NERDTree | wincmd p | endif
+
+"""Startify
+let g:startify_bookmarks = ['~/.vimrc', '~/.bashrc', '~/.profile', '~/.aliasrc']
+let g:startify_change_to_dir = 1
 
 """NERDTree
-autocmd vimenter * silent! NERDTree
-autocmd bufenter * if (winnr('$') == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+autocmd vimenter * silent! NERDTree | wincmd p
 let NERDTreeIngore = ['\.pyc$', '\.pyo$', '__pycache__$', '\.gitingore']
 let NERDTreeWinSize = 20
 let NERDTreeShowHidden=1
@@ -125,31 +126,18 @@ let g:NERDToggleCheckAllLines = 1
 
 """Airline config
 let g:airline_statusline_ontop = 0
+let g:airline#extensions#coc#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = '|'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '◀'
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline#extensions#syntastic#enabled = 1
 let g:airline_theme='solarized'
 
 """Ale
 let g:ale_sign_column_always = 1
 let g:airline#extensions#ale#enabled = 1
-
-"""Syntastic config
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_alwways_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
-let g:syntastic_aggregate_errors = 1
-"Python
-let g:syntastic_python_checkers = ['flake8', 'python']
-"Shell
-let g:syntastic_sh_shellcheck_exec = 'shellcheck'
-"""let g:syntastic_sh_shellcheck_args = '-e 2064,2086,2139,2155'
 
 if has('python3')
 """YCM
@@ -164,7 +152,10 @@ if has('python3')
 endif
 
 """IndentLine
-autocmd! User indentLine doautocmd indentLine Syntax
+autocmd vimenter * IndentLinesEnable
+let g:indentLine_enabled = 1
+let g:indentLine_color_term = 200
+let g:indentLine_char = '|'
 
 """Highlight for Pmenu
 highlight Pmenu guibg=brown gui=bold
@@ -190,6 +181,7 @@ nnoremap <C-H> <C-W><C-H>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
+"""Misc mappings
 nnoremap ; :
 nnoremap <C-C> <C-V>
 nnoremap j gj
@@ -207,7 +199,6 @@ nnoremap ]b :bnext<CR>
 "Tab mappings
 nnoremap [t :tabp<CR>
 nnoremap ]t :tabn<CR>
-
 """Plugin Mappings
 inoremap <silent><expr> <TAB>
             \ pumvisible() ? "\<C-n>" :
@@ -216,9 +207,32 @@ inoremap <silent><expr> <TAB>
 inoremap <expr><S-TAB> pumvisible() ?  "\<C-p>" : "\<C-h>"
 nnoremap <Leader>f :NERDTreeToggle<CR>
 nnoremap <Leader>; :Files<CR>
+nnoremap <F6> :UndotreeToggle<CR>
+nnoremap <Leader>v :Vista!!<CR>
 
 """Function
 function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~# '\s'
 endfunction
+
+"""s:LastBuffer Checks to see if any bufers is open that is NERDTree or
+"""Vista or both, if so they are closed
+function! s:LastBuffer()
+    let l:winc = winnr('$')
+    if(tabpagenr('$') == 1)
+        if(l:winc == 1)
+            let l:window = bufname(winbufnr(1))
+            if(l:window == t:NERDTreeBufName || l:window == "__vista__")
+                :q
+            endif
+        elseif(l:winc == 2)
+            let l:window1 = bufname(winbufnr(1))
+            let l:window2 = bufname(winbufnr(2))
+            if(l:window1 == t:NERDTreeBufName && l:window2 == "__vista__")
+                :qall
+            endif
+        endif
+    endif
+endfunction
+autocmd bufenter * silent! call s:LastBuffer()
