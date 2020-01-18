@@ -11,15 +11,22 @@ shopt -s checkwinsize
 set -o vi
 
 if [ -f ~/.aliasrc ]; then
-    . ~/.aliasrc
+    source ~/.aliasrc
+fi
+if [ -f ~/.extrarc ]; then
+    source ~/.extrarc
 fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 git_prompt() {
-    git branch 2>/dev/null | cut -d' ' -f2 && printf "$ " || printf " $ "
+    local branch
+    branch="$(git branch 2>/dev/null | cut -d' ' -f2)"
+    if [ -n "${branch}" ]; then
+        printf "[%s]" "${branch}"
+    fi
 }
 
-PS1='${RED}\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] $(git_prompt)\$ '
+PS1='${RED}\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(git_prompt)\$ '
 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -34,14 +41,15 @@ mcd() {
     cd "${1}"
 }
 
-upd() { 
-    local pat='../'; 
-    local course=''; 
-    local i="${1}"; 
-    while ((i > 0)); do 
-        course="${course}${pat}"; i=$((i-1)); 
-    done; 
-    cd "${course}"; 
+upd() {
+    local pat='../'
+    local course=''
+    local i="${1}"
+    while ((i > 0)); do
+        course="${course}${pat}"
+        i=$((i-1))
+    done
+    cd "${course}"
 }
 
 archive() {
@@ -67,8 +75,6 @@ extract() {
         fi
     done
 }
-    
-
 
 dotfiles() {
     action="${1}"
@@ -105,9 +111,8 @@ viw() {
     vim "$(which "${1}")"
 }
 
-dug() { 
+dug() {
     du -hx "${USENET_PATH}" 2>/dev/null | grep -P '[\d.]+G' | sort -h
 }
 
-cd
-
+cd || printf 'who cares\n'
