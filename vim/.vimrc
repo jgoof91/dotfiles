@@ -14,10 +14,7 @@ silent! if plug#begin()
         Plug 'AndrewRadev/splitjoin.vim'
         Plug 'terryma/vim-multiple-cursors'
         Plug 'airblade/vim-gitgutter'
-        Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-        Plug 'honza/vim-snippets'
         Plug 'w0rp/ale'
-        Plug 'neoclide/coc.nvim', {'branch': 'release'}
         Plug 'liuchengxu/vista.vim'
         Plug 'puremourning/vimspector'
         Plug 'mhinz/vim-startify'
@@ -27,7 +24,11 @@ silent! if plug#begin()
         if has('python3')
             Plug 'python-mode / python-mode'
             Plug 'Valloric/YouCompleteMe'
+            Plug 'Shougo/deoplete.nvim'
             Plug 'SirVer/ultisnips'
+            Plug 'honza/vim-snippets'
+            Plug 'roxma/nvim-yarp'
+            Plug 'roxma/vim-hug-neovim-rpc'
         endif
 
         Plug 'altercation/vim-colors-solarized'
@@ -126,7 +127,6 @@ let g:NERDToggleCheckAllLines = 1
 
 """Airline config
 let g:airline_statusline_ontop = 0
-let g:airline#extensions#coc#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = '|'
 let g:airline_left_sep = '▶'
@@ -143,7 +143,8 @@ if has('python3')
 """YCM
     let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
     let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-
+"""Deoplete
+    let g:deoplete#enable_at_startup = 1
 """Ultisnips
     let g:UltiSnipsExpandTrigger = "<Tab>"
     let g:UltiSnipsJumpForwardTrigger = "<tab>"
@@ -200,11 +201,6 @@ nnoremap ]b :bnext<CR>
 nnoremap [t :tabp<CR>
 nnoremap ]t :tabn<CR>
 """Plugin Mappings
-inoremap <silent><expr> <TAB>
-            \ pumvisible() ? "\<C-n>" :
-            \ <SID>check_back_space() ? "\<TAB>" :
-            \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ?  "\<C-p>" : "\<C-h>"
 nnoremap <Leader>f :NERDTreeToggle<CR>
 nnoremap <Leader>; :Files<CR>
 nnoremap <F6> :UndotreeToggle<CR>
