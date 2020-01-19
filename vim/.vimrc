@@ -167,12 +167,12 @@ hi clear OverLength
 hi OverLength term=underline ctermfg=9 guifg=Magenta
 
 " autocmd
-autocmd FileType sh nnoremap <buffer> <C-b> i"${}"<ESC>hi
-autocmd VimResized * wincmd =
-let &winheight = &lines * 7 / 10
-let &winwidth = &columns * 7 / 10
+autocmd FileType sh nnoremap <buffer> <C-b> i "${}"<ESC>hi
+""autocmd VimResized * wincmd =
+""let &winheight = &lines * 7 / 10
+""let &winwidth = &columns * 7 / 10
 
-"Shebang
+"""Shebang
 inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype)
 
 """Mapping for leader
