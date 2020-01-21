@@ -20,7 +20,8 @@ alias dps='docker ps'
 alias vb="${EDITOR} ${HOME}/.bashrc"
 alias vp="${EDITOR} ${HOME}/.profile"
 alias vv="${EDITOR} ${HOME}/.vimrc"
-alias va="$EDITOR} ${HOME}/.aliasrc"
+alias va="${EDITOR} ${HOME}/.aliasrc"
+alias reload-shell="source .profile; source .bashrc"
 
 #git
 alias gc="git add . && git commit -m "

@@ -1,7 +1,7 @@
 set modelines=0 nomodeline nocompatible
 
+"""Plug.vim Plugins {{{
 silent! if plug#begin()
-    call plug#begin()
         Plug 'scrooloose/nerdtree'
         Plug 'scrooloose/nerdcommenter'
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
@@ -18,17 +18,21 @@ silent! if plug#begin()
         Plug 'liuchengxu/vista.vim'
         Plug 'puremourning/vimspector'
         Plug 'mhinz/vim-startify'
-
         Plug 'Yggdroot/indentLine', {'on': 'IndentLinesEnable'}
+        Plug 'itchyny/lightline.vim'
 
         if has('python3')
-            Plug 'python-mode / python-mode'
-            Plug 'Valloric/YouCompleteMe'
-            Plug 'Shougo/deoplete.nvim'
+            Plug 'python-mode/python-mode'
+            if(! $MYSYSTEM == "TERMUX")
+                Plug 'Valloric/YouCompleteMe'
+            endif
+            if($MYSYSTEM == "TERMUX")
+                Plug 'Shougo/deoplete.nvim'
+                Plug 'roxma/nvim-yarp'
+                Plug 'roxma/vim-hug-neovim-rpc'
+            endif
             Plug 'SirVer/ultisnips'
             Plug 'honza/vim-snippets'
-            Plug 'roxma/nvim-yarp'
-            Plug 'roxma/vim-hug-neovim-rpc'
         endif
 
         Plug 'altercation/vim-colors-solarized'
@@ -46,10 +50,10 @@ silent! if plug#begin()
         Plug 'nightsense/cosmic_latte'
     call plug#end()
 endif
-
+"""}}}
+"""Set defualt vim options {{{
 filetype plugin indent on
 syntax enable
-
 set termguicolors
 set tabstop=4
 set softtabstop=4
@@ -59,6 +63,7 @@ set smarttab
 set autoindent
 set ruler
 set laststatus=2
+set foldmethod=marker
 set showcmd
 set showmode
 set wrap
@@ -72,8 +77,8 @@ set splitright
 set hlsearch
 set incsearch
 set title
-set undolevels=1000
-set history=1000
+set undolevels=10000
+set history=10000
 set visualbell
 set noerrorbells
 set path+=**
@@ -82,11 +87,12 @@ set colorcolumn=80
 set t_Co=256
 set hidden
 set backspace=indent,eol,start
+set noshowmode
 "set textwidth=80
-
 set background=dark
 silent! colo solarized
-
+"""}}}
+"""Platform Settings {{{
 if has('win64') || has('win32')
     set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
     set shellcmdFlag=-command
@@ -98,19 +104,24 @@ if has('unix')
     hi clear OverLength
     hi OverLength term=underline ctermfg=9 guifg=Magenta
 endif
+"""}}}
 
+"""Plugin Settings {{{
 """Startup for Startify and NERDTree
-autocmd StdinReadPre * let s:std_in = 1
-autocmd VimEnter * nested if !argc() && !exists('s:std_in') | silent! Startify |silent! NERDTree | wincmd p | endif
+augroup StartifyNerdtree
+    autocmd StdinReadPre * let s:std_in = 1
+    autocmd VimEnter * nested if !argc() && !exists('s:std_in') | silent! Startify | silent! NERDTree | wincmd p | endif
+    "autocmd VimEnter * silent! NERDTree | wincmd p
+    "autocmd Filetype python call s:PythonMode()
+augroup END
 
 """Startify
 let g:startify_bookmarks = ['~/.vimrc', '~/.bashrc', '~/.profile', '~/.aliasrc']
 let g:startify_change_to_dir = 1
 
 """NERDTree
-autocmd vimenter * silent! NERDTree | wincmd p
 let NERDTreeIngore = ['\.pyc$', '\.pyo$', '__pycache__$', '\.gitingore']
-let NERDTreeWinSize = 20
+let NERDTreeWinSize = 30
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = '>'
 let g:NERDTreeDirArrowCollapsible = '<'
@@ -126,13 +137,19 @@ let g:NERDTrimTrailingWhitespace = 1
 let g:NERDToggleCheckAllLines = 1
 
 """Airline config
-let g:airline_statusline_ontop = 0
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = '|'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '◀'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:lightline = {
+            \ 'colorscheme': 'solarized',
+            \ 'active': { 
+            \ 'left': [['mode', 'paste'], ['RO', 'filename', 'modified', 'git-branch', 'git-gutter']],
+            \ 'right': [['lineinfo'], ['percent'], 
+            \ ['fileformat', 'fileencoding', 'filetype'], ['ale-error', 'vista']]
+            \ }, 'component_function': {
+            \ 'git-branch': 'fugitive#head',
+            \ 'git-gutter': 'StatusGit',
+            \ 'ale-error': 'StatusAle',
+            \ 'vista': 'StatusVista'
+            \ }
+            \ }
 let g:airline_theme='solarized'
 
 """Ale
@@ -145,6 +162,9 @@ if has('python3')
     let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 """Deoplete
     let g:deoplete#enable_at_startup = 1
+    call deoplete#custom#option('sources', {
+                \ '_': ['ale'],
+                \ })
 """Ultisnips
     let g:UltiSnipsExpandTrigger = "<Tab>"
     let g:UltiSnipsJumpForwardTrigger = "<tab>"
@@ -157,6 +177,7 @@ autocmd vimenter * IndentLinesEnable
 let g:indentLine_enabled = 1
 let g:indentLine_color_term = 200
 let g:indentLine_char = '|'
+"""}}}
 
 """Highlight for Pmenu
 highlight Pmenu guibg=brown gui=bold
@@ -172,6 +193,7 @@ autocmd FileType sh nnoremap <buffer> <C-b> i "${}"<ESC>hi
 ""let &winheight = &lines * 7 / 10
 ""let &winwidth = &columns * 7 / 10
 
+"""Vim Mappings {{{
 """Shebang
 inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype)
 
@@ -205,8 +227,9 @@ nnoremap <Leader>f :NERDTreeToggle<CR>
 nnoremap <Leader>; :Files<CR>
 nnoremap <F6> :UndotreeToggle<CR>
 nnoremap <Leader>v :Vista!!<CR>
+"""}}}
 
-"""Function
+"""Function {{{
 function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~# '\s'
@@ -218,17 +241,51 @@ function! s:LastBuffer()
     let l:winc = winnr('$')
     if(tabpagenr('$') == 1)
         if(l:winc == 1)
-            let l:window = bufname(winbufnr(1))
-            if(l:window == t:NERDTreeBufName || l:window == "__vista__")
-                :q
+            let l:window = bufname(winbufnr('%'))
+            if(l:window ==# t:NERDTreeBufName)
+                :qall
+            elseif(l:window ==# "__vista__" || vista#sidebar#IsOpen())
+                :qall
             endif
         elseif(l:winc == 2)
             let l:window1 = bufname(winbufnr(1))
             let l:window2 = bufname(winbufnr(2))
-            if(l:window1 == t:NERDTreeBufName && l:window2 == "__vista__")
+            if(l:window1 == t:NERDTreeBufName && l:window2 ==# "__vista__")
                 :qall
             endif
         endif
     endif
 endfunction
 autocmd bufenter * silent! call s:LastBuffer()
+
+function! StatusGit() abort
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+
+function! StatusVista() abort
+    return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+
+function! StatusAle() abort
+    let l:count = ale#statusline#Count(bufnr(''))
+    let l:all_error = l:count.error + l:count.style_error
+    let l:non_error = l:count.total - l:all_error
+    return l:count.total == 0 ? 'OK' : printf('%dW %dE, %s', 
+                \ l:non_error,
+                \ l:all_error,
+                \ ale#statusline#FirstProblem()) 
+endfunction
+
+function! s:TabLineEnable()
+    g:tabline_enable = 1
+endfunction
+
+function! s:TabLineDisable()
+    g:tabline_enable = 0
+endfunction
+
+function! s:TabLineAddBuffer()
+    let 
+endfunction
+"""}}}
