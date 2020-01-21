@@ -63,6 +63,8 @@ set smarttab
 set autoindent
 set ruler
 set laststatus=2
+set showtabline=0
+set tabline=%!TabLineBuilder()
 set foldmethod=marker
 set showcmd
 set showmode
@@ -161,10 +163,12 @@ if has('python3')
     let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
     let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 """Deoplete
-    let g:deoplete#enable_at_startup = 1
-    call deoplete#custom#option('sources', {
-                \ '_': ['ale'],
-                \ })
+    if($MYSYSTEM ==# 'TERMUX')
+        let g:deoplete#enable_at_startup = 1
+        call deoplete#custom#option('sources', {
+                    \ '_': ['ale'],
+                    \ })
+    endif
 """Ultisnips
     let g:UltiSnipsExpandTrigger = "<Tab>"
     let g:UltiSnipsJumpForwardTrigger = "<tab>"
@@ -274,18 +278,32 @@ function! StatusAle() abort
     return l:count.total == 0 ? 'OK' : printf('%dW %dE, %s', 
                 \ l:non_error,
                 \ l:all_error,
-                \ ale#statusline#FirstProblem()) 
+                \ ale#statusline#FirstProblem(bufnr('%'), 'E')
+                \ ) 
 endfunction
 
-function! s:TabLineEnable()
-    g:tabline_enable = 1
-endfunction
-
-function! s:TabLineDisable()
-    g:tabline_enable = 0
-endfunction
-
-function! s:TabLineAddBuffer()
-    let 
+function! TabLineBuilder()
+    let s = ''
+    let cur = tabpagenr()
+    for i in range(1, tabpagenr('$'))
+        let winnr = tabpagewinnr(i, '$')
+        let buflist = tabpagebuflist(i)
+        let bufnr = buflist[winnr - 1]
+        let buftype = getbufvar(bufnr, '&buftype')
+        let file = bufname(bufnr)
+        let s .= (i == cur) ? '%#TabLineSel#' : '%#TabNum#'
+        let s .= i . ' %'
+        let s.= (i == cur) ? '%#TabLineSel#' : '%#TabLine#'
+        if(buftype == 'nofile')
+            let file = '[No File]'
+        else
+            let file = fnamemodify(file, ':p:t')
+        endif
+        if(file  == '')
+            let file = '[No Name]'
+        endif
+        let s .= file . (i == cur) ? '%m' : ''
+    endfor
+    let s .= '%#TabLineFill#%='
 endfunction
 """}}}

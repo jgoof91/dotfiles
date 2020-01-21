@@ -17,10 +17,6 @@ alias failed='grep -hi 'invalid' /var/log/auth.log'
 alias dps='docker ps'
 
 #open config files
-alias vb="${EDITOR} ${HOME}/.bashrc"
-alias vp="${EDITOR} ${HOME}/.profile"
-alias vv="${EDITOR} ${HOME}/.vimrc"
-alias va="${EDITOR} ${HOME}/.aliasrc"
 alias reload-shell="source .profile; source .bashrc"
 
 #git
@@ -34,3 +30,8 @@ for editor in nvim vim vi nano; do
                 break;
         fi
 done
+
+alias vb="${EDITOR} ${HOME}/.bashrc"
+alias vp="${EDITOR} ${HOME}/.profile"
+alias vv="${EDITOR} ${HOME}/.vimrc"
+alias va="${EDITOR} ${HOME}/.aliasrc"
