@@ -63,8 +63,8 @@ set smarttab
 set autoindent
 set ruler
 set laststatus=2
-set showtabline=0
-set tabline=%!TabLineBuilder()
+set showtabline=2
+set tabline=
 set foldmethod=marker
 set showcmd
 set showmode
@@ -138,21 +138,31 @@ let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 let g:NERDToggleCheckAllLines = 1
 
-"""Airline config
+"""Lightline
 let g:lightline = {
             \ 'colorscheme': 'solarized',
             \ 'active': { 
-            \ 'left': [['mode', 'paste'], ['RO', 'filename', 'modified', 'git-branch', 'git-gutter']],
+            \ 'left': [['mode', 'paste'], ['git-branch', 'git-gutter']],
             \ 'right': [['lineinfo'], ['percent'], 
             \ ['fileformat', 'fileencoding', 'filetype'], ['ale-error', 'vista']]
-            \ }, 'component_function': {
+            \ }, 
+            \ 'tabline': {
+            \ 'left': [['tabandbufline']],
+            \ 'right': [[]]
+            \ },
+            \ 'component_function': {
             \ 'git-branch': 'fugitive#head',
             \ 'git-gutter': 'StatusGit',
             \ 'ale-error': 'StatusAle',
             \ 'vista': 'StatusVista'
+            \ },
+            \ 'component_expand': {
+            \ 'tabandbufline': 'TabAndBufLine'
+            \ },
+            \ 'component_type': {
+            \ 'tabandbufline': 'tabsel'
             \ }
             \ }
-let g:airline_theme='solarized'
 
 """Ale
 let g:ale_sign_column_always = 1
@@ -210,7 +220,6 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 """Misc mappings
 nnoremap ; :
-nnoremap <C-C> <C-V>
 nnoremap j gj
 nnoremap k gk
 nnoremap <C-G><C-T> :tabe<CR>:ter ++curwin<CR>
@@ -282,28 +291,67 @@ function! StatusAle() abort
                 \ ) 
 endfunction
 
-function! TabLineBuilder()
-    let s = ''
-    let cur = tabpagenr()
-    for i in range(1, tabpagenr('$'))
-        let winnr = tabpagewinnr(i, '$')
-        let buflist = tabpagebuflist(i)
-        let bufnr = buflist[winnr - 1]
-        let buftype = getbufvar(bufnr, '&buftype')
-        let file = bufname(bufnr)
-        let s .= (i == cur) ? '%#TabLineSel#' : '%#TabNum#'
-        let s .= i . ' %'
-        let s.= (i == cur) ? '%#TabLineSel#' : '%#TabLine#'
-        if(buftype == 'nofile')
-            let file = '[No File]'
-        else
-            let file = fnamemodify(file, ':p:t')
-        endif
-        if(file  == '')
-            let file = '[No Name]'
-        endif
-        let s .= file . (i == cur) ? '%m' : ''
+function! s:BufName(buf)
+    let l:name = bufname(a:buf)
+    if(l:name == '')
+        let l:name = '[No Name]'
+    else
+        let l:name = fnamemodify(l:name, ':p')
+        let l:name = pathshorten(l:name)
+    endif
+    if(getbufvar(a:buf, '&mod'))
+        let l:name .= '+'
+    elseif(getbufvar(a:buf, '&readonly') && !getbufvar(a:buf, 'modifiable') && getbufvar(a:buf, '&filetype') !=# 'help')
+        let l:name .= '[RO]'
+    endif
+    return substitute(l:name, '%', '%%', 'g')
+endfunction
+
+function! s:BufNames(bufs, start, end)
+    let l:names = []
+    for l:i in range(a:start, a:end - 1)
+        call add(l:names, s:BufName(a:bufs[l:i]))
     endfor
-    let s .= '%#TabLineFill#%='
+    return l:names
+endfunction
+
+function! s:BufLine()
+    let l:bufs = filter(range(1, bufnr('$')), "bufexists(v:val) && buflisted(v:val) && !(getbufvar(v:val, '&filetype') ==# 'qf')")
+    let l:cur = index(l:bufs, bufnr('%'))
+    if(l:cur == -1)
+        return [s:BufNames(l:bufs, 0, len(l:bufs)), [], []]
+    endif
+    let l:before = s:BufNames(l:bufs, 0, l:cur)
+    let l:current = s:BufNames(l:bufs, l:cur, l:cur + 1)
+    let l:after = s:BufNames(l:bufs, l:cur + 1, len(l:bufs))
+    return [l:before, l:current, l:after]
+endfunction
+
+function! s:TabLine()
+    let l:tabc = tabpagenr('$')
+    let l:cur = tabpagenr()
+    let l:before = []
+    let l:current = []
+    let l:after = []
+    for l:i in range(1,l:tabc)
+        let l:buflist = tabpagebuflist(l:i)
+        if(l:i < l:cur)
+            call add(l:before, s:BufName(l:buflist[0]))
+        elseif(l:i == l:cur)
+            call add(l:current, s:BufName(l:buflist[0]))
+        else
+            call add(l:after, s:BufName(l:buflist[0]))
+        endif
+    endfor
+    return [l:before, l:current, l:after]
+endfunction
+
+function! TabAndBufLine() 
+    if(tabpagenr('$') > 1)
+        return s:TabLine()
+    else
+        return s:BufLine()
+    endif
+    return [[],[],[]]
 endfunction
 """}}}
