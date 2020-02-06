@@ -22,7 +22,7 @@ git_prompt() {
     local branch
     branch="$(git branch 2>/dev/null | cut -d' ' -f2)"
     if [ -n "${branch}" ]; then
-        printf "[%s]" "${branch}"
+        printf " [%s]" "${branch}"
     fi
 }
 
