@@ -17,7 +17,7 @@ export LIGHTGRAY="\[\033[38;5;8m\]"
 export WHITE="\[\033[38;5;15\]" 
 export BLACK="\[\033[38;5;16m\]" 
 export DARKGRAY="\[\033[38;5;239m\]" 
-export RED="\[\033[38;5;196m\]" 
+export RED="\[\e[31m\]" 
 export LIGHTRED="\[\033[38;5;163m\]" 
 export GREEN="\[\033[38;5;40m\]" 
 export LIGHTGREEN="\[\033[38;5;83m\]" 
@@ -40,9 +40,11 @@ for editor in nvim vim vi nano; do
         fi
 done
 
-if [ -d "${HOME}/bin" ] ; then
-    PATH="${HOME}/bin:$PATH"
-fi
+for dir in "${HOME}/bin" "${HOME}/.local/bin"; do
+    if [ -d "${dir}" ]; then
+        PATH="${PATH}:${dir}"
+    fi
+done
 
 if [ -n "${BASH_VERSION}" ]; then
     . ~/.bashrc

@@ -10,6 +10,7 @@ silent! if plug#begin('~/.vim/plugged')
         Plug 'tpope/vim-endwise'
         Plug 'tpope/vim-fugitive'
         Plug 'tpope/vim-rhubarb'
+        Plug 'jiangmiao/auto-pairs'
         Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
         Plug 'AndrewRadev/splitjoin.vim'
         Plug 'terryma/vim-multiple-cursors'
@@ -20,6 +21,8 @@ silent! if plug#begin('~/.vim/plugged')
         Plug 'mhinz/vim-startify'
         Plug 'Yggdroot/indentLine', {'on': 'IndentLinesEnable'}
         Plug 'itchyny/lightline.vim'
+        if has('python3')
+        endif
         Plug 'prabirshrestha/async.vim'
         Plug 'prabirshrestha/vim-lsp'
         Plug 'prabirshrestha/asyncomplete.vim'
@@ -29,8 +32,9 @@ silent! if plug#begin('~/.vim/plugged')
             "Plug 'python-mode/python-mode'
             Plug 'SirVer/ultisnips'
             Plug 'honza/vim-snippets'
-            Plug 'thomasfaingnaert/vim-lsp-snippets'
-            Plug 'thomasfaingnaert/vim-lsp-ultisnips'
+            Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+            " Plug 'thomasfaingnaert/vim-lsp-snippets'
+            " Plug 'thomasfaingnaert/vim-lsp-ultisnips'
         endif
         Plug 'altercation/vim-colors-solarized'
         Plug 'tomasr/molokai'
@@ -48,7 +52,7 @@ silent! if plug#begin('~/.vim/plugged')
     call plug#end()
 endif
 "}}}
-"Set defualt vim options {{{
+"Basic Settings {{{
 filetype plugin indent on
 syntax enable
 set termguicolors
@@ -75,6 +79,8 @@ set splitbelow
 set splitright
 set hlsearch
 set incsearch
+set ignorecase
+set smartcase
 set title
 set undolevels=10000
 set history=10000
@@ -82,6 +88,7 @@ set visualbell
 set noerrorbells
 set path+=**
 set wildmenu
+set wildignore=*.o,*~,*.pyc
 set colorcolumn=80
 set t_Co=256
 set hidden
@@ -89,6 +96,9 @@ set backspace=indent,eol,start
 set noshowmode
 set undofile
 set undodir='~/.vim/undo'
+set nobackup
+set nowb
+set noswapfile
 "
 "set textwidth=80
 set background=dark
@@ -109,147 +119,6 @@ if has('unix')
     hi clear OverLength
     hi OverLength term=underline ctermfg=9 guifg=Magenta
 endif
-"}}}
-
-"Highlight for Pmenu
-highlight Pmenu guibg=brown gui=bold
-highlight Pmenu ctermbg=gray gui=bold
-
-"Clear the over 80 char red highligths and replace it with red char
-hi clear OverLength
-hi OverLength term=underline ctermfg=9 guifg=Magenta
-
-"Autocmd
-autocmd FileType sh nnoremap <buffer> <C-b> i "${}"<ESC>hi
-autocmd! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-"autocmd VimResized * wincmd =
-"let &winheight = &lines * 7 / 10
-"let &winwidth = &columns * 7 / 10
-"Startup for Startify and NERDTree {{{
-augroup StartifyNerdtree
-    autocmd StdinReadPre * let s:std_in = 1
-    autocmd VimEnter * nested if !argc() && !exists('s:std_in') | silent! Startify | silent! NERDTree | wincmd p | endif
-    "autocmd VimEnter * silent! NERDTree | wincmd p
-    "autocmd Filetype python call s:PythonMode()
-augroup END
-"}}}
-"Startify {{{
-let g:startify_bookmarks = ['~/.vimrc', '~/.bashrc', '~/.profile', '~/.aliasrc']
-let g:startify_change_to_dir = 1
-"}}}
-"NERDTree {{{
-let NERDTreeIngore = ['\.pyc$', '\.pyo$', '__pycache__$', '\.gitingore']
-let NERDTreeWinSize = 30
-let NERDTreeShowHidden=1
-let g:NERDTreeDirArrowExpandable = '>'
-let g:NERDTreeDirArrowCollapsible = '<'
-nnoremap <silent><Leader>f :NERDTreeToggle<CR>
-"}}}
-"NERDCommenter {{{
-let g:NERDSpaceDelims = 1
-let g:NERDCompactSexyComs = 1
-let g:NERDDefaultAlign = 'left'
-let g:NERDAltDelims_java = 1
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**', 'right': '*/' } }
-let g:NERDCommentEmptyLines = 1
-let g:NERDTrimTrailingWhitespace = 1
-let g:NERDToggleCheckAllLines = 1
-"}}}
-"Lightline {{{
-let g:lightline = {
-            \ 'colorscheme': 'solarized',
-            \ 'active': {
-            \ 'left': [['mode', 'paste'], ['git-branch', 'git-gutter']],
-            \ 'right': [['lineinfo'], ['percent'],
-            \ ['fileformat', 'fileencoding', 'filetype'], ['ale-error', 'vista']]
-            \ },
-            \ 'tabline': {
-            \ 'left': [['tabandbufline']],
-            \ 'right': [[]]
-            \ },
-            \ 'component_function': {
-            \ 'git-branch': 'fugitive#head',
-            \ 'git-gutter': 'StatusGit',
-            \ 'ale-error': 'StatusAle',
-            \ 'vista': 'StatusVista'
-            \ },
-            \ 'component_expand': {
-            \ 'tabandbufline': 'TabAndBufLine'
-            \ },
-            \ 'component_type': {
-            \ 'tabandbufline': 'tabsel'
-            \ }
-            \ }
-"}}}
-"Ale {{{
-let g:ale_sign_column_always = 1
-let g:airline#extensions#ale#enabled = 1
-"}}}
-"Vista {{{
-nnoremap <silent><Leader>v :Vista!!<CR>
-"}}}
-"UndoTree {{{
-nnoremap <silent><F6> :UndotreeToggle<CR>
-"}}}
-"Python-mode {{{
-let g:pymode_python = 'python3'
-let g:pymode_trim_whitespaces = 1
-let g:pymode_rope_completion = 1
-let g:pymode_rope_complete_on_dot = 1
-"}}}
-"Vim-lsp {{{
-let g:lsp_diagnostics_enabled = 0
-if executable('pyls')
-    " pip install python-language-server
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
-"AsyncComplete-File
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'whitelist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
-
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    nmap <buffer> gd <plug>(lsp-definition)
-    nmap <buffer> <f2> <plug>(lsp-rename)
-    " refer to doc to add more commands
-endfunction
-
-augroup lsp_install
-    au!
-    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
-"}}}
-"Ultisnips {{{
-if has('python3')
-    let g:UltiSnipsExpandTrigger = "<Tab>"
-    let g:UltiSnipsJumpForwardTrigger = "<tab>"
-    let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-    "let g:UltiSnipsEditSplit = "vertical"
-endif
-"}}}
-"IndentLine {{{
-autocmd vimenter * IndentLinesEnable
-let g:indentLine_enabled = 1
-let g:indentLine_color_term = 200
-let g:indentLine_char = '|'
-"}}}
-"FZF {{{
-nnoremap <silent><Leader>; :Files<CR>
 "}}}
 "Mappings {{{
 "Shebang
@@ -284,29 +153,60 @@ nnoremap ]b :bnext<CR>
 nnoremap [t :tabp<CR>
 nnoremap ]t :tabn<CR>
 "}}}
-"Function {{{
-"s:LastBuffer Checks to see if any bufers is open that is NERDTree or
-"Vista or both, if so they are closed
-function! s:LastBuffer() abort
-    let l:winc = winnr('$')
-    if tabpagenr('$') == 1
-        if l:winc == 1
-            let l:window = bufname(winbufnr('%'))
-            if l:window ==# t:NERDTreeBufName
-                :qall
-            elseif l:window ==# "__vista__" || vista#sidebar#IsOpen()
-                :qall
-            endif
-        elseif l:winc == 2
-            let l:window1 = bufname(winbufnr(1))
-            let l:window2 = bufname(winbufnr(2))
-            if l:window1 == t:NERDTreeBufName && l:window2 ==# "__vista__"
-                :qall
-            endif
-        endif
-    endif
-endfunction
-autocmd bufenter * silent! call s:LastBuffer()
+"Startup for Startify and NERDTree {{{
+augroup StartifyNerdtree
+    autocmd StdinReadPre * let s:std_in = 1
+    autocmd VimEnter * nested if !argc() && !exists('s:std_in') | silent! Startify | silent! NERDTree | wincmd p | endif
+    "autocmd VimEnter * silent! NERDTree | wincmd p
+augroup END
+"}}}
+"Startify {{{
+let g:startify_bookmarks = ['~/.vimrc', '~/.bashrc', '~/.profile', '~/.aliasrc']
+let g:startify_change_to_dir = 1
+"}}}
+"NERDTree {{{
+let NERDTreeIngore = ['\.pyc$', '\.pyo$', '__pycache__$', '\.gitingore']
+let NERDTreeWinSize = 30
+let NERDTreeShowHidden=1
+let g:NERDTreeDirArrowExpandable = '>'
+let g:NERDTreeDirArrowCollapsible = '<'
+nnoremap <silent> <Leader>f :NERDTreeToggle<CR>
+"}}}
+"NERDCommenter {{{
+let g:NERDSpaceDelims = 1
+let g:NERDCompactSexyComs = 1
+let g:NERDDefaultAlign = 'left'
+let g:NERDAltDelims_java = 1
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**', 'right': '*/' } }
+let g:NERDCommentEmptyLines = 1
+let g:NERDTrimTrailingWhitespace = 1
+let g:NERDToggleCheckAllLines = 1
+"}}}
+"Lightline {{{
+let g:lightline = {
+            \ 'colorscheme': 'solarized',
+            \ 'active': {
+            \ 'left': [['mode', 'paste'], ['git-branch', 'git-gutter']],
+            \ 'right': [['lineinfo'], ['percent'],
+            \ ['fileformat', 'fileencoding', 'filetype'], ['ale-error'], ['vista']]
+            \ },
+            \ 'tabline': {
+            \ 'left': [['tabandbufline']],
+            \ 'right': [[]]
+            \ },
+            \ 'component_function': {
+            \ 'git-branch': 'fugitive#head',
+            \ 'git-gutter': 'StatusGit',
+            \ 'ale-error': 'StatusAle',
+            \ 'vista': 'StatusVista'
+            \ },
+            \ 'component_expand': {
+            \ 'tabandbufline': 'TabAndBufLine'
+            \ },
+            \ 'component_type': {
+            \ 'tabandbufline': 'tabsel'
+            \ }
+            \ }
 
 function! StatusGit() abort
   let [a,m,r] = GitGutterGetHunkSummary()
@@ -391,4 +291,147 @@ function! TabAndBufLine()
     endif
     return [[],[],[]]
 endfunction
+"}}}
+"Ale {{{
+let g:ale_sign_column_always = 1
+let g:airline#extensions#ale#enabled = 1
+"}}}
+"Vista {{{
+nnoremap <silent><Leader>v :Vista!!<CR>
+"}}}
+"UndoTree {{{
+nnoremap <silent><F6> :UndotreeToggle<CR>
+"}}}
+"Python-mode {{{
+let g:pymode_python = 'python3'
+let g:pymode_trim_whitespaces = 1
+let g:pymode_rope_completion = 1
+let g:pymode_rope_complete_on_dot = 1
+"}}}
+"Vim-lsp {{{
+let g:lsp_diagnostics_enabled = 0
+if executable('pyls')
+    " pip install python-language-server
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+if executable('clangd-9')
+    " Install clangd-9
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'clangd',
+                \ 'cmd': {server_info->['clangd']},
+                \ 'whitelist': ['c', 'cpp']
+                \ })
+endif
+"AsyncComplete-File
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+            \ 'name': 'file',
+            \ 'whitelist': ['*'],
+            \ 'priority': 10,
+            \ 'completor': function('asyncomplete#sources#file#completor')
+            \ }))
+" AsyncComplete-Ultisnip
+if has('python3')
+    au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+                \ 'name': 'ultisnips',
+                \ 'whitelist': ['*'],
+                \ 'priority': 10,
+                \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+                \ }))
+endif
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    setlocal foldmethod=expr
+                \ foldexpr=lsp#ui#vim#folding#foldexpr()
+                \ foldtext=lsp#ui#vim#folding#foldtext()
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> <f2> <plug>(lsp-rename)
+    "refer to doc to add more commands
+endfunction
+
+augroup lsp_install
+    au!
+    "call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ asyncomplete#force_refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<C-g>u\<cr>"
+inoremap <C-Space> <Plug>(asyncomplete_force_refresh)
+"}}}
+"Ultisnips {{{
+if has('python3')
+    let g:UltiSnipsExpandTrigger = "<C-Tab>"
+    let g:UltiSnipsJumpForwardTrigger = "<C-S-Tab>"
+    let g:UltiSnipsJumpBackwardTrigger = "<C-Down>"
+    "let g:UltiSnipsEditSplit = "vertical"
+endif
+"}}}
+"IndentLine {{{
+autocmd vimenter * IndentLinesEnable
+let g:indentLine_enabled = 1
+let g:indentLine_color_term = 190
+let g:indentLine_color_gui = '#616161'
+let g:indentLine_char = '|'
+"}}}
+"FZF {{{
+nnoremap <silent><Leader>; :Files<CR>
+"}}}
+"Function {{{
+"s:LastBuffer Checks to see if any bufers is open that is NERDTree or
+"Vista or both, if so they are closed
+function! s:LastBuffer() abort
+    let l:winc = winnr('$')
+    if tabpagenr('$') == 1
+        if l:winc == 1
+            let l:window = bufname(winbufnr('%'))
+            if l:window ==# t:NERDTreeBufName
+                :qall
+            elseif l:window ==# "__vista__" || vista#sidebar#IsOpen()
+                :qall
+            endif
+        elseif l:winc == 2
+            let l:window1 = bufname(winbufnr(1))
+            let l:window2 = bufname(winbufnr(2))
+            if l:window1 == t:NERDTreeBufName && 
+                        \ l:window2 ==# "__vista__" &&
+                        \ vista#sidebar#IsOpen()
+                :qall
+            endif
+        endif
+    endif
+endfunction
+autocmd bufenter * silent! call s:LastBuffer()
+"}}}
+"Misc {{{
+highlight Pmenu guibg=brown gui=bold
+highlight Pmenu ctermbg=gray gui=bold
+
+"Clear the over 80 char red highligths and replace it with red char
+hi clear OverLength
+hi OverLength term=underline ctermfg=9 guifg=Magenta
+
+"Autocmd
+autocmd FileType sh nnoremap <buffer> <C-b> i "${}"<ESC>hi
+autocmd! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+"autocmd VimResized * wincmd =
+"let &winheight = &lines * 7 / 10
+"let &winwidth = &columns * 7 / 10
 "}}}

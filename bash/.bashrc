@@ -13,9 +13,6 @@ set -o vi
 if [ -f ~/.aliasrc ]; then
     source ~/.aliasrc
 fi
-if [ -f ~/.extrarc ]; then
-    source ~/.extrarc
-fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 git_prompt() {
@@ -23,10 +20,12 @@ git_prompt() {
     branch="$(git branch 2>/dev/null | cut -d' ' -f2)"
     if [ -n "${branch}" ]; then
         printf " [%s]" "${branch}"
+    else
+        printf ""
     fi
 }
 
-PS1='${RED}\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(git_prompt)\$ '
+export PS1='${RED}\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(git_prompt)\$ '
 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -114,5 +113,9 @@ viw() {
 dug() {
     du -hx "${USENET_PATH}" 2>/dev/null | grep -P '[\d.]+G' | sort -h
 }
+
+if [ -f ~/.extrarc ]; then
+    source ~/.extrarc
+fi
 
 cd || printf 'who cares\n'
