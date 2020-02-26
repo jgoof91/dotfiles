@@ -1,8 +1,10 @@
 export LANG="en_US.UTF-8"
 export BROWSER="lynx"
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-export STOW_DIR=~/.dotfiles
-export TERM=xterm-256color
+export TERMINAL="st"
+export FILE="nnn"
+export STOW_DIR="${HOME}/.dotfiles"
+export INPUTRC="${HOME}/.config/inputrc"
+export SUDO_ASKPASS="${HOME}/.local/bin/askpass"
 
 #The XDG env vars
 export XDG_CONFIG_HOME="${HOME}/.config"
@@ -13,6 +15,7 @@ export XDG_DATA_DIRS="/usr/local/share:/usr/share/"
 export KEYTIMEOUT=1
 
 #Colors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export LIGHTGRAY="\[\033[38;5;8m\]" 
 export WHITE="\[\033[38;5;15\]" 
 export BLACK="\[\033[38;5;16m\]" 
@@ -40,12 +43,10 @@ for editor in nvim vim vi nano; do
         fi
 done
 
-for dir in "${HOME}/bin" "${HOME}/.local/bin"; do
-    if [ -d "${dir}" ]; then
-        PATH="${PATH}:${dir}"
-    fi
-done
+if [ -d ~/.local/bin ]; then
+    export PATH="${HOME}/.local/bin:${PATH}"
+fi
 
-if [ -n "${BASH_VERSION}" ]; then
-    . ~/.bashrc
+if [ -f ~/.extrarc ]; then
+    . ~/.extrarc
 fi

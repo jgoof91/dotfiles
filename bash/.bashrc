@@ -17,7 +17,7 @@ fi
 
 git_prompt() {
     local branch
-    branch="$(git branch 2>/dev/null | cut -d' ' -f2)"
+    branch="$(git branch 2>/dev/null | cut -d' ' -f2 | tr -d '\n')"
     if [ -n "${branch}" ]; then
         printf " [%s]" "${branch}"
     else
@@ -73,37 +73,6 @@ extract() {
             esac
         fi
     done
-}
-
-dotfiles() {
-    action="${1}"
-    shift
-    if [ ! -d ~/.dotfiles ]; then
-        if ! mkdir ~/.dotfiles; then
-            printf "Error: creating .dotfiles dir failed\n"
-            return
-        fi
-    fi
-    pushd ~/.dotfiles/ >/dev/null
-    case "${action}" in
-        [pP]ull)
-            git pull
-            ;;
-        [pP]ush)
-            git push
-            ;;
-        [cC]ommit)
-            git add .
-            git commit -m "${@}"
-            ;;
-        [cC]lone)
-            git clone https://github.com/jgoof91/dotfiles ~/.dotfiles
-            ;;
-        *)
-            printf "dotfiles [pull|push|commit]\n"
-            ;;
-    esac
-    popd >/dev/null
 }
 
 viw() {

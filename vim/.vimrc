@@ -55,7 +55,6 @@ endif
 "Basic Settings {{{
 filetype plugin indent on
 syntax enable
-set termguicolors
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -89,8 +88,6 @@ set noerrorbells
 set path+=**
 set wildmenu
 set wildignore=*.o,*~,*.pyc
-set colorcolumn=80
-set t_Co=256
 set hidden
 set backspace=indent,eol,start
 set noshowmode
@@ -99,10 +96,18 @@ set undodir='~/.vim/undo'
 set nobackup
 set nowb
 set noswapfile
-"
 "set textwidth=80
 set background=dark
-silent! colo solarized
+try
+    set t_8f=[38;2;%lu;%lu;%lum
+    set t_8b=[48;2;%lu;%lu;%lum
+    colorscheme gruvbox
+    set t_Co=256
+    set termguicolors
+    set colorcolumn=80
+    "let g:solarized_termcolors=256
+catch
+endtry
 if has('gui_running')
     set guioptions-=e
 endif
