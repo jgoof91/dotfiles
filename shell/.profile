@@ -47,6 +47,9 @@ if [ -d ~/.local/bin ]; then
     export PATH="${HOME}/.local/bin:${PATH}"
 fi
 
+if [ -n "$BASH_VERSION" ]; then
+    source ~/.bashrc
+fi
 if [ -f ~/.extrarc ]; then
     . ~/.extrarc
 fi
