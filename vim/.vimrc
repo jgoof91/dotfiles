@@ -189,7 +189,7 @@ let g:NERDToggleCheckAllLines = 1
 "}}}
 "Lightline {{{
 let g:lightline = {
-            \ 'colorscheme': 'solarized',
+            \ 'colorscheme': 'gruvbox',
             \ 'active': {
             \ 'left': [['mode', 'paste'], ['git-branch', 'git-gutter']],
             \ 'right': [['lineinfo'], ['percent'],
