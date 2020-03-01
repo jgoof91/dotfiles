@@ -16,10 +16,11 @@ fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 git_prompt() {
-    local branch
+    local branch stats
     branch="$(git branch 2>/dev/null | cut -d' ' -f2 | tr -d '\n')"
     if [ -n "${branch}" ]; then
-        printf "[%s]" "${branch}"
+        [ -n "$(git status --short)" ] && stats='+' || stats=''
+        printf "[%s%s]" "${branch}" "${stats}"
     else
         printf ""
     fi
