@@ -19,13 +19,13 @@ git_prompt() {
     local branch
     branch="$(git branch 2>/dev/null | cut -d' ' -f2 | tr -d '\n')"
     if [ -n "${branch}" ]; then
-        printf " [%s]" "${branch}"
+        printf "[%s]" "${branch}"
     else
         printf ""
     fi
 }
 
-export PS1='\[\033[01;34m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(git_prompt)\$ '
+export PS1="\[${YELLOW}\][\[${GREEN}\]\u\[${YELLOW}\]@\[${GREEN}\]\h\[${YELLOW}\]][\[${LBLUE}\]\w\[${YELLOW}\]]\[${RED}\]\$(git_prompt)\[${YELLOW}\]\$${RESET} "
 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
