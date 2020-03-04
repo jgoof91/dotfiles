@@ -1,0 +1,43 @@
+#GEN HOTKEYS
+super + Return
+    $TERMINAL
+super + e
+    $TERMINAL -e $EDITOR
+super + f
+    $TERMINAL -e nnn
+super + b
+    chromium-browser
+super + t
+    $TERMINAL -e htop
+super + a
+    rofi -modi run -show run
+super + w
+    rofi -modi window -show window
+super + {_,shift +}BackSpace
+    {prompt "Reboot Yes/No" "sudo -A reboot",prompt "Shutdown Yes/No" "sudo -A shutdown -t now"}
+super + m;{m,u,e}
+    {rclone-media m,rclone-media u, mediaexplorer}
+XF86Audio{Raise,Lower}Volume
+    amixer -M set PCM 5%{+,-};\
+        polybar-msg hook vol 1
+XF86AudioMute
+    amixer set PCM toggle;\
+        polybar-msg hook vol 1
+
+#BSPWM
+super + {_,shift +}{h,j,k,l}
+    bspc node -{f,s} {west,south,north,east}
+super + {g,semicolon}
+    bspc desktop {prev,next}.occupied --focus
+super + {_,shift +}{1-5}
+    bspc {desktop -f,node -d} '^{1-5}'  
+#To hide and Unhide all
+super + {_,shift} v
+    {bspc node -g hidden,bspc query -N -n .hidden | xargs -I winID bspc node winID -g hidden=off}
+#To close or kill
+super + {_,shift +}x
+    bspc node -{c,k}
+super + q
+    bspc quit
+super + {_,shift +} r
+    {pkill -USR1 -x sxhkd,/home/$USER/.config/bspwm/bspwmrc}

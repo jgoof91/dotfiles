@@ -1,0 +1,33 @@
+#GEN HOTKEYS
+super + Return
+    $TERMINAL
+super + e
+    $TERMINAL -e $EDITOR
+super + f
+    $TERMINAL -e nnn
+super + b
+    chromium-browser; $BROWSER
+super + t
+    $TERMINAL -e htop
+super + {_,shift +} Backspace
+    sudo -A {reboot, shutdown -t now}
+CapLock
+    xdo key Escape
+
+#BSPWM
+super + {_,shift +}{h,j,k,l}
+    bspc node -{f,s} {west,south,north,east}
+super + {g,semicolon}
+    bspc desktop {prev,next}.occupied --focus
+super + {_,shift +}{1-4}
+    bspc {desktop -f,node -d} '^{1-4}'  
+#To hide and Unhide all
+super + {_,shift} v
+    {bspc node -g hidden,bspc query -N -n .hidden | xargs -I winID bspc node winID -g hidden=off}
+#To close or kill
+super + {_,shift +}x
+    bspc node -{c,k}
+super + q
+    bspc quit
+super + {_,shift +} r
+    {pkill -USR1 -x sxhkd,/home/$USER/.config/bspwm/bspwmrc}

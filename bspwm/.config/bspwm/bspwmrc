@@ -1,0 +1,23 @@
+#!/bin/bash
+apps=(\
+    sxhkd
+    polybar
+    )
+for app in ${apps[@]}; do
+    killall -q -e "${app}"
+done
+
+sxhkd &
+polybar --reload default &
+
+#bspc config border_width 2
+bspc config window_gap 10
+bspc config top_padding 24
+bspc config bottom_padding 10
+bspc config focus_follows_pointer true
+bspc config initial_polarity second_child
+
+bspc monitor -d I II III IV V
+bspc desktop -f '^1'
+
+bspc rule -a 'chromium-browser' desktop='^2' follow=on
