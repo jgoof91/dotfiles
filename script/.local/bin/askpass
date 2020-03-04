@@ -1,0 +1,2 @@
+#!/bin/sh
+rofi -dmenu -password  -l 0 -p "${1}"

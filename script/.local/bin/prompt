@@ -1,0 +1,2 @@
+#!/bin/sh
+[ "$(printf "Yes\\nNo" | rofi -dmenu -l 2 -i -p "${1}" )" = "Yes" ] && $2
