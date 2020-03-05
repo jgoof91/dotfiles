@@ -26,7 +26,7 @@ git_prompt() {
     fi
 }
 
-export PS1="\[${YELLOW}\][\[${GREEN}\]\u\[${YELLOW}\]@\[${GREEN}\]\h\[${YELLOW}\]][\[${LBLUE}\]\w\[${YELLOW}\]]\[${RED}\]\$(git_prompt)\[${YELLOW}\]\$${RESET} "
+export PS1="\[${YELLOW}\][\[${GREEN}\]\u\[${YELLOW}\]@\[${GREEN}\]\h\[${YELLOW}\]][\[${LBLUE}\]\w\[${YELLOW}\]]\[${RED}\]\$(git_prompt)\[${YELLOW}\]\$\[${RESET}\] "
 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
