@@ -14,14 +14,14 @@ super + a
 super + w
     rofi -modi window -show window
 super + {_,shift +}BackSpace
-    {prompt "Reboot Yes/No" "sudo -A reboot",prompt "Shutdown Yes/No" "sudo -A shutdown -t now"}
+    {prompt "Reboot Yes/No" "sudo -A reboot",prompt "Shutdown Yes/No" "sudo -A shutdown -h now"}
 super + m;{m,u,e}
     {rclone-media m,rclone-media u, mediaexplorer}
 XF86Audio{Raise,Lower}Volume
-    amixer -M set PCM 5%{+,-};\
+    amixer -M set Master 5%{+,-};\
         polybar-msg hook vol 1
 XF86AudioMute
-    amixer set PCM toggle;\
+    amixer set Master toggle;\
         polybar-msg hook vol 1
 
 #BSPWM

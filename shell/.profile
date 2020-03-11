@@ -2,6 +2,7 @@ export LANG="en_US.UTF-8"
 export TERMINAL="st"
 export FILE="nnn"
 export BROWSER="lynx"
+export PAGER="less"
 export STOW_DIR="${HOME}/.dotfiles"
 export INPUTRC="${HOME}/.config/inputrc"
 export SUDO_ASKPASS="${HOME}/.local/bin/askpass"
@@ -47,9 +48,6 @@ if [ -d ~/.local/bin ]; then
     export PATH="${HOME}/.local/bin:${PATH}"
 fi
 
-if [ -n "$BASH_VERSION" ]; then
-    source ~/.bashrc
-fi
 if [ -f ~/.extrarc ]; then
     . ~/.extrarc
 fi
