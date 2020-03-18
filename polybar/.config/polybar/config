@@ -102,7 +102,7 @@ label-separator-foreground = ${colors.orange}
 [module/vol]
 type = internal/alsa
 master-soundcard = default
-master-mixer = PCM
+master-mixer = Master
 
 format-volume-foreground = ${colors.yellow}
 
