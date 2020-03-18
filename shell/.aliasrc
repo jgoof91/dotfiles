@@ -20,6 +20,7 @@ alias reload-shell="source .profile; source .bashrc"
 
 #git
 alias gc="git add . && git commit -m "
+alias config="git --git-dir=${HOME}/.dotfiles/"
 
 for editor in nvim vim vi nano; do
         if command -v "${editor}" >/dev/null; then
@@ -35,5 +36,6 @@ alias vp="${EDITOR} ${HOME}/.profile"
 alias vv="${EDITOR} ${HOME}/.vimrc"
 alias va="${EDITOR} ${HOME}/.aliasrc"
 alias vs="${EDITOR} ${XDG_CONFIG_HOME}/sxhkd/sxhkdrc"
+alias vx="${EDITOR} ${HOME}/.Xresources"
 alias vwm="${EDITOR} ${XDG_CONFIG_HOME}/bspwm/bspwmrc"
 alias vpb="${EDITOR} ${XDG_CONFIG_HOME}/polybar/config"

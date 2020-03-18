@@ -1,5 +1,5 @@
 export LANG="en_US.UTF-8"
-export TERMINAL="st"
+export TERMINAL="urxvt"
 export FILE="nnn"
 export BROWSER="lynx"
 export PAGER="less"

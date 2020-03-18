@@ -1,0 +1,12 @@
+#!/bin/sh
+
+[ -f "${1}" ] && wallpaper="${1}"
+[ -d "${1}" ] && wallpaper="$(find "${1}" -type f -iname '*.jpg' -or -iname '*.jpeg' -or -iname '*.png' | shuf -n 1)"
+[ -z "${1}" ] && wallpaper="$(find "${HOME}/wallpapers" -type f -iname '*.jpg' -or -iname '*.jpeg' -or -iname '*.png' | shuf -n 1)"
+
+type wal 2>&1 1>/dev/null && {
+    wal -c;
+    wal -n -a '75' -i "${wallpaper}" -o ~/.config/wal/post-run;
+} &
+
+nitrogen --set-scaled "${wallpaper}" &

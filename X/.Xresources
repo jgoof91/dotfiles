@@ -1,0 +1,40 @@
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.hintstyle: hintfull
+Xft.lcdfilter: lcdfilter
+
+*.height: 30
+polybar.font: Monospace:size=22
+rofi.font: Monospace 22
+rofi.theme: ~/.cache/wal/colors-rofi-dark
+
+st.font: Monospace-22
+st.xfps: 1200
+st.actionfps: 30
+
+!Scroll gen
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: true
+URxvt*scrollTtyKeypress: true
+!Scroll with pager
+URxvt.secondaryScreen: 1
+URxvt.secondaryScroll: 0
+!Font
+URxvt.font: xft:Monospace:size=22
+URxvt.letterSpace: -1
+!Perl ext
+URxvt.perl-ext-common: ...,default,url-select,clipboard,...
+!Url select
+URxvt.keysym.M-y: perl:url-select:select_next
+URxvt.url-select.launcher: /usr/bin/xdg-open 
+URxvt.url-select.underline: true
+!Clipboard
+URxvt.clipboard.autocopy: true
+URxvt.keysym.M-c: perl:clipboard:copy
+URxvt.keysym.M-v: perl:clipboard:paste
+
+URxvt*depth: 32
+URxvt*background: [80]black
+URxvt*foreground: white

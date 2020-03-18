@@ -37,13 +37,14 @@ borange = #fe8019
 [bar/default]
 enable-ipc = true
 width = 100%
-height = 26
+height = ${xrdb:polybar.height:36}
 
-font-0 = ${xrdb:*.font:Monospace\:size=12}
+font-0 = Monospace:size=22
 
 padding-left = 0
 padding-right = 0
 separator = |
+separator-foregound = ${colors.orange}
 
 background = ${colors.bg0}
 foreground = $(colors.fg0)
@@ -52,7 +53,7 @@ module-margin-left = 1
 module-margin-right = 1
 modules-left = bspwm
 modules-center = xwindow
-modules-right = bat vol date 
+modules-right = vol date 
 wm-restack = bspwm
 
 
@@ -72,7 +73,7 @@ label = %title:0:45:...%
 
 [module/bspwm]
 type = internal/bspwm
-format = <label-state> <label-mode>
+#format = <label-state>
 
 label-focused = %index%
 label-focused-background = ${colors.bg1}
@@ -101,7 +102,7 @@ label-separator-foreground = ${colors.orange}
 [module/vol]
 type = internal/alsa
 master-soundcard = default
-master-id = 0
+master-mixer = PCM
 
 format-volume-foreground = ${colors.yellow}
 

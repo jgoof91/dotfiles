@@ -98,16 +98,20 @@ set nowb
 set noswapfile
 "set textwidth=80
 set background=dark
+set t_8f=[38;2;%lu;%lu;%lum
+set t_8b=[48;2;%lu;%lu;%lum
 try
-    set t_8f=[38;2;%lu;%lu;%lum
-    set t_8b=[48;2;%lu;%lu;%lum
     colorscheme gruvbox
-    set t_Co=256
-    set termguicolors
-    set colorcolumn=80
-    "let g:solarized_termcolors=256
 catch
+    try
+        colorscheme gruvbox
+    catch
+    endtry
 endtry
+set t_Co=256
+set termguicolors
+set colorcolumn=80
+"let g:solarized_termcolors=256
 if has('gui_running')
     set guioptions-=e
 endif

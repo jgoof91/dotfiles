@@ -2,16 +2,25 @@
 apps=(\
     sxhkd
     polybar
+    dunst
+    xcompmgr
+    urxvtd
     )
 
 for app in ${apps[@]}; do
     killall -q -e "${app}"
 done
 
+[ -f ~/.Xresources ] && xrdb -merge -I"${HOME}" ~/.Xresources
+setxkbmap -option caps:escape &
 sxhkd &
+dunst &
+urxvtd &
+xcompmgr &
+setbg &
 polybar --reload default &
 
-bspc monitor -d I II III IV V
+bspc monitor -d I II III IV V VI VII VIII IX 
 bspc desktop -f '^1'
 
 bspc config border_width 2
@@ -22,10 +31,9 @@ bspc config borderless_monocle true
 bspc config gapless_monocle true
 
 bspc config focus_follows_pointer true
-bspc config initial_polarity second_child
 
 bspc config normal_border_color '#928374'
 bspc config focused_border_color '#cc241d'
 bspc config presel_border_color '#d65d0e'
 
-bspc rule -a 'chromium-browser' desktop='^2' follow=on
+bspc rule -a 'chromium' desktop='^2'

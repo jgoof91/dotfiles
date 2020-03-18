@@ -1,6 +1,6 @@
 #GEN HOTKEYS
-super + Return
-    $TERMINAL
+super + {_,shift +} Return
+    {$TERMINAL,rofi -modi run -show run}
 super + e
     $TERMINAL -e $EDITOR
 super + f
@@ -9,8 +9,6 @@ super + b
     chromium-browser
 super + t
     $TERMINAL -e htop
-super + a
-    rofi -modi run -show run
 super + w
     rofi -modi window -show window
 super + {_,shift +}BackSpace
@@ -18,26 +16,36 @@ super + {_,shift +}BackSpace
 super + m;{m,u,e}
     {rclone-media m,rclone-media u, mediaexplorer}
 XF86Audio{Raise,Lower}Volume
-    amixer -M set Master 5%{+,-};\
-        polybar-msg hook vol 1
+    amixer -M set PCM 5%{+,-}
 XF86AudioMute
-    amixer set Master toggle;\
-        polybar-msg hook vol 1
+    amixer set PCM toggle
 
 #BSPWM
+#Move focused
 super + {_,shift +}{h,j,k,l}
     bspc node -{f,s} {west,south,north,east}
 super + {g,semicolon}
     bspc desktop {prev,next}.occupied --focus
-super + {_,shift +}{1-5}
-    bspc {desktop -f,node -d} '^{1-5}'  
+super + {_,shift +}{1-9}
+    bspc {desktop -f,node -d} '^{1-9}'  
+
+#Preselect
+super + ctrl + {h,j,k,l}
+    bspc node -p {west,south,north,east}
+super + ctrl + {1,9}
+    bspc node -o 0.{1-9}
+super + ctrl + space
+    bspc node -p cancel
+
 #To hide and Unhide all
 super + {_,shift} v
     {bspc node -g hidden,bspc query -N -n .hidden | xargs -I winID bspc node winID -g hidden=off}
 #To close or kill
 super + {_,shift +}x
     bspc node -{c,k}
+#To quit out of bspwm
 super + q
     bspc quit
+#To restart SXHKD or BSPWM
 super + {_,shift +} r
-    {pkill -USR1 -x sxhkd,/home/$USER/.config/bspwm/bspwmrc}
+    {pkill -USR1 -x sxhkd,~/.config/bspwm/bspwmrc}
