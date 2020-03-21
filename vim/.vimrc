@@ -92,7 +92,7 @@ set hidden
 set backspace=indent,eol,start
 set noshowmode
 set undofile
-set undodir='~/.vim/undo'
+set undodir=~/.vim/undo
 set nobackup
 set nowb
 set noswapfile
