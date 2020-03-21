@@ -7,6 +7,44 @@ tmp="$(mktemp)"
     rm -f "${tmp}"
 }
 [[ ! -d ~/wallpapers ]] && mkdir -p ~/wallpapers
+
+fetch_html() {
+    curl -SsLf -o "${tmp}" "https://wallpaperscraft.com/catalog/${catalog}/${sort}${res}"
+    sleep 2
+    if [[ "$(file -i "${tmp}")" =~ gzip ]]; then
+        html="$(gzip -d <"${tmp}")"
+    else
+        html="$(cat "${tmp}")"
+    fi
+}
+
+download_wallpaper() {
+    fetch_html
+    readarray -d ' ' images < <(xmllint --html --xpath '//li[@class="wallpapers__item"]/a/@href' - <<<"${html}" 2>/dev/null | \
+                perl -e '$list = <STDIN>; $list =~ s/(\"|href=)//g; foreach $image (split(/ /, $list)) { my (undef, $u2) = split(/\/download\//, $image); $u2 =~ s/\//_/g; print "https://wallpaperscraft.com/image/" . $u2 . ".jpg " if(defined $u2); }')
+
+    [[ ! -d "${HOME}/wallpapers/${catalog}" ]] && mkdir -p "${HOME}/wallpapers/${catalog}"
+    pushd "${HOME}/wallpapers/${catalog}" >/dev/null || exit -1
+    for image in "${images[@]}"; do
+        image="${image/ /}"
+        if [[ -z ${image} ]] || [[ -f ${HOME}/wallpapers/${catalog}/${image##*/} ]]; then
+            continue
+        fi
+        printf 'Downloading %s\n' "${image}"
+        curl -sSLf -O "${image}"
+        sleep 2
+    done
+    popd >/dev/null
+    exit 0
+}
+
+list_catalog() {
+    fetch_html
+    echo "$(xmllint --html --xpath '//option[contains(@value, "catalog/")]/text()' - <<<"${html}" 2>/dev/null |\
+    sed 's/  /\n/g')"
+    exit 0
+}
+
 catalog='space'
 res='1920x1080'
 sort=''
@@ -33,6 +71,10 @@ while (( "${#}" )); do
             esac
             shift 2
             ;;
+        -l)
+            list_catalog
+            shift
+            ;;
         -hd)
             res="1920x1080"
             shift
@@ -47,28 +89,4 @@ while (( "${#}" )); do
             ;;
     esac
 done
-
-curl -SsLf -o "${tmp}" "https://wallpaperscraft.com/catalog/${catalog}/${sort}${res}"
-sleep 2
-if [[ "$(file -i "${tmp}")" =~ gzip ]]; then
-    html="$(gzip -d <"${tmp}")"
-else
-    html="$(cat "${tmp}")"
-fi
-
-readarray -d ' ' images < <(echo "${html}" | \
-            xmllint --html --xpath '//li[@class="wallpapers__item"]/a/@href' - 2>/dev/null | \
-            perl -e '$list = <STDIN>; $list =~ s/(\"|href=)//g; foreach $image (split(/ /, $list)) { my (undef, $u2) = split(/\/download\//, $image); $u2 =~ s/\//_/g; print "https://wallpaperscraft.com/image/" . $u2 . ".jpg " if(defined $u2); }')
-
-[[ ! -d "${HOME}/wallpapers/${catalog}" ]] && mkdir -p "${HOME}/wallpapers/${catalog}"
-pushd "${HOME}/wallpapers/${catalog}" >/dev/null || exit -1
-for image in "${images[@]}"; do
-    image="${image/ /}"
-    if [[ -z ${image} ]] || [[ -f ${HOME}/wallpapers/${catalog}/${image##*/} ]]; then
-        continue
-    fi
-    printf 'Downloading %s\n' "${image}"
-    curl -sSLf -O "${image}"
-    sleep 2
-done
-popd >/dev/null
+download_wallpaper
