@@ -3,7 +3,6 @@ apps=(\
     sxhkd
     polybar
     dunst
-    xcompmgr
     urxvtd
     )
 
@@ -16,7 +15,6 @@ setxkbmap -option caps:escape &
 sxhkd &
 dunst &
 urxvtd &
-xcompmgr &
 setbg &
 polybar --reload default &
 
