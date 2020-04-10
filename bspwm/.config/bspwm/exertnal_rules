@@ -1,0 +1,3 @@
+#!/bin/sh
+
+[ "$(bspc -T -d -n '@/' | jq -r '.splitType')" = 'vertical' ] && { print 'node=@/\nsplit_dir=west\n'; exit 0; }

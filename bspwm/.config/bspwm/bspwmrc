@@ -3,8 +3,8 @@ apps=(\
     sxhkd
     polybar
     dunst
-    xcompmgr
-    urxvtd
+    picom
+    unclutter
     )
 
 for app in ${apps[@]}; do
@@ -14,14 +14,13 @@ done
 [ -f ~/.Xresources ] && xrdb -merge -I"${HOME}" ~/.Xresources
 setxkbmap -option caps:escape &
 sxhkd &
+picom -b &
 dunst &
-urxvtd &
-xcompmgr &
 setbg &
 polybar --reload default &
+unclutter &
 
-bspc monitor -d I II III IV V VI VII VIII IX 
-bspc desktop -f '^1'
+bspc monitor -d I II III IV V VI VII VIII IX
 
 bspc config border_width 2
 bspc config window_gap 10
@@ -30,10 +29,16 @@ bspc config split_ratio 0.50
 bspc config borderless_monocle true
 bspc config gapless_monocle true
 
-bspc config focus_follows_pointer true
+bspc config focus_follows_pointer false
+bspc config click_to_focus none
+bspc config pointer_action1 move
+bspc config pointer_action2 resize
+bspc config pointer_action3 resize_side
 
 bspc config normal_border_color '#928374'
 bspc config focused_border_color '#cc241d'
 bspc config presel_border_color '#d65d0e'
 
 bspc rule -a 'chromium' desktop='^2'
+
+#bspc config external_rules_command ~/.config/bpswm/external_rules

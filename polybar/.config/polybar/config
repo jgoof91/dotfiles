@@ -34,26 +34,34 @@ bpurple = #d3869b
 baqua = #8ec07c
 borange = #fe8019
 
+[wal]
+background = ${xrdb:color0:#222}
+foreground = ${xrdb:color7:#222}
+foreground-alt = ${xrdb:color7:#222}
+primary = ${xrdb:color1:#222}
+secondary = ${xrdb:color2:#222}
+alert = ${xrdb:color3:#222}
+
 [bar/default]
 enable-ipc = true
 width = 100%
-height = ${xrdb:polybar.height:36}
+height = ${xrdb:polybar.height:20}
 
-font-0 = Monospace:size=22
+font-0 = ${xrdb:*.font:Monospace\:size=22}
 
 padding-left = 0
 padding-right = 0
 separator = |
 separator-foregound = ${colors.orange}
 
-background = ${colors.bg0}
-foreground = $(colors.fg0)
+background = ${wal.background}
+foreground = $(wal.foreground)
 
 module-margin-left = 1
 module-margin-right = 1
 modules-left = bspwm
 modules-center = xwindow
-modules-right = vol date 
+modules-right = vol bat date
 wm-restack = bspwm
 
 
@@ -63,12 +71,12 @@ interval = 1.0
 date = %m-%d-%Y
 time = %I:%M%p
 label = %time% %date%
-label-foreground = ${colors.yellow}
+label-foreground = ${wal.foreground}
 
 [module/xwindow]
 type = internal/xwindow
-format-background = ${colors.bg0}
-format-foreground = ${colors.blue}
+format-background = ${wal.background}
+format-foreground = ${wal.foreground}
 label = %title:0:45:...%
 
 [module/bspwm]
@@ -76,38 +84,38 @@ type = internal/bspwm
 #format = <label-state>
 
 label-focused = %index%
-label-focused-background = ${colors.bg1}
-label-focused-foreground = ${colors.red}
-label-focused-underline =  ${colors.orange}
+label-focused-background = ${wal.background}
+label-focused-foreground = ${wal.foreground}
+label-focused-underline =  ${wal.alert}
 label-focused-padding = 1
 
 label-occupied = %index%
-label-occupied-background = ${colors.bg0}
-label-occupied-foreground = ${colors.byellow}
+label-occupied-background = ${wal.background}
+label-occupied-foreground = ${wal.secondary}
 label-occupied-padding = 1
 
 label-urgent = %index%
-label-urgent-background = ${colors.bg1}
-label-urgent-foreground = ${colors.purple}
+label-urgent-background = ${wal.background}
+label-urgent-foreground = ${wal.alert}
 label-urgent-padding = 1
 
 label-empty = %index%
-label-empty-foreground = ${colors.yellow}
+label-empty-foreground = ${wal.secondary}
 label-empty-padding = 1
 
 label-separator = |
 label-separator-padding = 0.5
-label-separator-foreground = ${colors.orange}
+label-separator-foreground = ${wal.foreground}
 
 [module/vol]
 type = internal/alsa
 master-soundcard = default
 master-mixer = Master
 
-format-volume-foreground = ${colors.yellow}
+format-volume-foreground = ${wal.foreground}
 
 label-muted = muted
-label-muted-foreground = ${colors.red}
+label-muted-foreground = ${wal.foreground}
 
 interval = 5
 
@@ -118,12 +126,12 @@ adapter = ADP1
 full-at = 99
 
 label-full = Fully charged
-label-full-foreground = ${colors.fg0}
+label-full-foreground = ${wal.foreground}
 
 label-charging = Charging %percentage%%
-label-charging-foreground = ${colors.blue}
+label-charging-foreground = ${wal.foreground}
 
 label-discharging = Discharging %percentage%%
-label-discharging-foreground = ${colors.yellow}
+label-discharging-foreground = ${wal.foreground}
 
 poll-interval = 5

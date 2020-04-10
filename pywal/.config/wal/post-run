@@ -4,7 +4,7 @@
 
 ln -sf ~/.cache/wal/dunstrc ~/.config/dunst/dunstrc
 pkill dunst
-dunst &
+dunst -conf ~/.cache/wal/dunstrc &
 
 bspc config normal_border_color "${color1}"
 bspc config active_border_color "${color2}"

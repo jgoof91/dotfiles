@@ -1,18 +1,20 @@
 #GEN HOTKEYS
 super + {_,shift +} Return
     {$TERMINAL,rofi -modi run -show run}
-super + e
+super + w
     $TERMINAL -e $EDITOR
 super + f
-    $TERMINAL -e nnn
-super + b
-    chromium-browser
+    $TERMINAL -e $FILE
+super + e
+    $TERMINAL -e neomutt
 super + t
     $TERMINAL -e htop
+super + b
+    chromium-browser
 super + w
     rofi -modi window -show window
 super + {_,shift +}BackSpace
-    {prompt "Reboot Yes/No" "doas reboot",prompt "Shutdown Yes/No" "doas shutdown -h now"}
+    {prompt "Reboot Yes/No" "doas /sbin/reboot",prompt "Shutdown Yes/No" "doas /sbin/shutdown -h now"}
 super + m;{m,u,e}
     {rclone-media m,rclone-media u, mediaexplorer}
 XF86Audio{Raise,Lower}Volume

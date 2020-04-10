@@ -1,4 +1,7 @@
+#colors
 alias ls='ls --color=auto'
+alias grep="grep --color=auto"
+
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
@@ -14,28 +17,36 @@ alias pull="${HOME}/mover pull"
 alias rule="sudo nft list ruleset"
 alias failed='grep -hi 'invalid' /var/log/auth.log'
 alias dps='docker ps'
+alias f="find . -type f | fzf"
+
+#shutdown and reboot
+alias shutdown='doas /sbin/shutdown -h now'
+alias reboot='doas /sbin/reboot'
 
 #open config files
-alias reload-shell="source .profile; source .bashrc"
+alias reload-shell="source ${HOME}/.profile; source ${HOME}/.bashrc"
 
 #git
 alias gc="git add . && git commit -m "
-alias config="git --git-dir=${HOME}/.dotfiles/"
+alias config="git --git-dir=${HOME}/.dotfiles/.git --work-tree=${HOME}/.dotfiles "
 
-for editor in nvim vim vi nano; do
-        if command -v "${editor}" >/dev/null; then
-                alias v="${editor}"
-                alias vi="${editor}"
-                alias vim="${editor}"
-                break;
-        fi
-done
+alias v="nvim"
+alias vb="v ${HOME}/.bashrc; source ${HOME}/.bashrc"
+alias vp="v ${HOME}/.profile; source ${HOME}/.profile"
+alias va="v ${HOME}/.aliasrc; source ${HOME}/.aliasrc"
+alias vv="v ${HOME}/.vimrc"
+alias vs="v ${XDG_CONFIG_HOME}/sxhkd/sxhkdrc"
+alias vx="v ${HOME}/.Xresources"
+alias vwm="v ${XDG_CONFIG_HOME}/bspwm/bspwmrc"
+alias vpb="v ${XDG_CONFIG_HOME}/polybar/config"
+alias vf="fzf_app nvim"
 
-alias vb="${EDITOR} ${HOME}/.bashrc"
-alias vp="${EDITOR} ${HOME}/.profile"
-alias vv="${EDITOR} ${HOME}/.vimrc"
-alias va="${EDITOR} ${HOME}/.aliasrc"
-alias vs="${EDITOR} ${XDG_CONFIG_HOME}/sxhkd/sxhkdrc"
-alias vx="${EDITOR} ${HOME}/.Xresources"
-alias vwm="${EDITOR} ${XDG_CONFIG_HOME}/bspwm/bspwmrc"
-alias vpb="${EDITOR} ${XDG_CONFIG_HOME}/polybar/config"
+alias merge="doas emerge --ask"
+alias changed="doas emerge --ask --changed-use --deep @world"
+alias emake="doas ${EDITOR} /etc/portage/make.conf"
+alias rem="doas emerge --ask --depclean"
+alias portup="doas emerge --ask --oneshot --quiet sys-apps/portage"
+alias update="doas emerge --sync"
+alias upgrade="doas emerge --ask --update --newuse --deep @world"
+alias qupgrade="upgrade --quiet"
+alias search="emerge -S"

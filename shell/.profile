@@ -1,10 +1,16 @@
 export LANG="en_US.UTF-8"
-export TERMINAL="urxvt"
-export FILE="nnn"
+export TERMINAL="st"
+export FILE="vifm"
 export BROWSER="lynx"
 export PAGER="less"
+export EDITOR="nvim"
+export VISUAL="${EDITOR}"
+export GIT_EDITOR="${EDITOR}"
 export STOW_DIR="${HOME}/.dotfiles"
 export INPUTRC="${HOME}/.config/inputrc"
+export LESSHISTFILE=""
+export FZF_DEFAULT_OPTS="-i"
+
 export SUDO_ASKPASS="${HOME}/.local/bin/askpass"
 
 #The XDG env vars

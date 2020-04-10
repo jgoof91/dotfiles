@@ -1,0 +1,44 @@
+set realname = "Jonah Smith"
+set mbox_type = maildir
+set header_cache = ~/.cache/mutt/headers
+set message_cachedir = ~/.cache/mutt/messages
+set mail_check = 120
+set index_format = "%4C %Z %{%b %D} %-15.15L (%?l?%4l&%4c?) %s"
+
+#sidebar
+set sidebar_visible =  yes
+set sidebar_width = 20
+set sidebar_short_path = yes
+set sidebar_component_depth = 0
+set sidebar_delim_chars = '/.'
+set sidebar_folder_indent = yes
+set sidebar_indent_string = " | "
+set sidebar_new_mail_only = no
+set sidebar_non_empty_mailbox_only = yes
+set sidebar_next_new_wrap = no
+set sidebar_divider_char = '|'
+set mail_check_stats
+set sidebar_sort_method = 'new'
+
+#sidebar bind
+bind index,pager \Ck sidebar-prev
+bind index,pager \Cj sidebar-next
+bind index,pager \Cl sidebar-open
+bind index,pager \Co sidebar-toggle-visible
+
+
+set nm_default_uri = 'notmuch:///home/jonah/Mail'
+set virtual_spoolfile = yes
+virtual-mailboxes "inbox" "notmuch://?query=tag:inbox"
+virtual-mailboxes "archive" "notmuch://?query=tag:archive"
+virtual-mailboxes "sent" "notmuch://?query=tag:sent"
+virtual-mailboxes "unread" "notmuch://?query=tag:unread"
+virtual-mailboxes "hotmail" "notmuch://?query=tag:hotmail"
+virtual-mailboxes "gmail" "notmuch://?query=tag:gmail"
+virtual-mailboxes "grim" "notmuch://?query=tag:grim"
+virtual-mailboxes "bill" "notmuch://?query=tag:bill"
+virtual-mailboxes "spam" "notmuch://?query=tag:spam"
+virtual-mailboxes "sec" "notmuch://?query=tag:sec"
+
+#color
+source ~/.config/neomutt/color/gruvbox.neomuttrc

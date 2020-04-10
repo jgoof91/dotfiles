@@ -38,9 +38,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
-mcd() {
-    mkdir -p "${1}"
-    cd "${1}"
+mkcd() {
+    mkdir -p "${1}" && cd "${1}"
 }
 
 upd() {
@@ -79,11 +78,15 @@ extract() {
 }
 
 viw() {
-    vim "$(which "${1}")"
+    ${EDITOR} "$(which "${1}")"
 }
 
 dug() {
     du -hx "${USENET_PATH}" 2>/dev/null | grep -P '[\d.]+G' | sort -h
+}
+
+fzf_app() {
+    $1 $(find . -type f | fzf -i -m --prompt='Files to edit: ')
 }
 
 if [ -f ~/.extrarc ]; then

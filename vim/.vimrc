@@ -92,7 +92,7 @@ set hidden
 set backspace=indent,eol,start
 set noshowmode
 set undofile
-set undodir='~/.vim/undo'
+set undodir=~/.vim/undo//
 set nobackup
 set nowb
 set noswapfile
@@ -103,10 +103,6 @@ set t_8b=[48;2;%lu;%lu;%lum
 try
     colorscheme gruvbox
 catch
-    try
-        colorscheme gruvbox
-    catch
-    endtry
 endtry
 set t_Co=256
 set termguicolors
@@ -129,6 +125,14 @@ if has('unix')
     hi OverLength term=underline ctermfg=9 guifg=Magenta
 endif
 "}}}
+"Autocmd {{{
+autocmd BufReadPost *aliasrc set filetype=sh
+autocmd BufReadPost *neomuttrc set filetype=neomuttrc
+autocmd BufWritePost *Xresources,*Xdefaults !xrdb -merge  %
+autocmd BufWritePost *bspwmrc !bspc wm -r
+autocmd BufWritePost *sxhkdrc !pkill -USR1 -x sxhkd
+autocmd BufWritePre * %s/\s\+$//e
+"}}}
 "Mappings {{{
 "Shebang
 inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype)
@@ -145,7 +149,6 @@ nnoremap ; :
 nnoremap j gj
 nnoremap k gk
 nnoremap <silent><C-G><C-T> :tabe<CR>:ter ++curwin<CR>
-nnoremap <silent><F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 nnoremap <silent><F4> :so $MYVIMRC<CR>
 inoremap <C-F> <C-X><C-F>
 "Save mappings
@@ -418,7 +421,7 @@ function! s:LastBuffer() abort
         elseif l:winc == 2
             let l:window1 = bufname(winbufnr(1))
             let l:window2 = bufname(winbufnr(2))
-            if l:window1 == t:NERDTreeBufName && 
+            if l:window1 == t:NERDTreeBufName &&
                         \ l:window2 ==# "__vista__" &&
                         \ vista#sidebar#IsOpen()
                 :qall
