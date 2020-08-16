@@ -10,7 +10,7 @@ super + e
 super + t
     $TERMINAL -e htop
 super + b
-    chromium-browser
+   firefox-bin
 super + w
     rofi -modi window -show window
 super + {_,shift +}BackSpace
@@ -29,7 +29,7 @@ super + {_,shift +}{h,j,k,l}
 super + {g,semicolon}
     bspc desktop {prev,next}.occupied --focus
 super + {_,shift +}{1-9}
-    bspc {desktop -f,node -d} '^{1-9}'  
+    bspc {desktop -f,node -d} '^{1-9}'
 
 #Preselect
 super + ctrl + {h,j,k,l}
