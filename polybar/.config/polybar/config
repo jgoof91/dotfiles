@@ -51,9 +51,9 @@ foreground = $(colors.fg0)
 
 module-margin-left = 1
 module-margin-right = 1
-modules-left = bspwm
-modules-center = xwindow
-modules-right = vol date 
+modules-left = bspwm xwindow
+modules-center = 
+modules-right = rclone packupgrade vol date 
 wm-restack = bspwm
 
 
@@ -102,7 +102,7 @@ label-separator-foreground = ${colors.orange}
 [module/vol]
 type = internal/alsa
 master-soundcard = default
-master-mixer = PCM
+master-mixer = HDMI
 
 format-volume-foreground = ${colors.yellow}
 
@@ -127,3 +127,20 @@ label-discharging = Discharging %percentage%%
 label-discharging-foreground = ${colors.yellow}
 
 poll-interval = 5
+
+[module/packupgrade]
+type = custom/script
+exec = /home/jonah/.local/bin/pack-upgrade
+interval = 36000
+format-foreground = ${colors.yellow}
+click-left = /home/jonah/.local/bin/pack-upgrade left
+click-right = /home/jonah/.local/bin/pack-upgrade right
+
+[module/rclone]
+type = custom/script
+exec = /home/jonah/.local/bin/poly-rclone
+format-foreground = ${colors.yellow}
+click-left = /home/jonah/.local/bin/poly-rclone left
+click-right = /home/jonah/.local/bin/poly-rclone right
+
+interval = 3000

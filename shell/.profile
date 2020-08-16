@@ -1,6 +1,6 @@
 export LANG="en_US.UTF-8"
-export TERMINAL="urxvt"
-export FILE="nnn"
+export TERMINAL="st"
+export FILE="vifm"
 export BROWSER="lynx"
 export PAGER="less"
 export STOW_DIR="${HOME}/.dotfiles"
@@ -14,6 +14,13 @@ export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_DATA_HOME="${HOME}/.local/share"
 export XDG_DATA_DIRS="/usr/local/share:/usr/share/"
 export KEYTIMEOUT=1
+
+#Perl
+export PATH="/home/jonah/.local/lib/perl5/bin${PATH:+:${PATH}}"
+export PERL5LIB="/home/jonah/.local/lib/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"
+export PERL_LOCAL_LIB_ROOT="/home/jonah/.local/lib/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"
+export PERL_MB_OPT="--install_base \"/home/jonah/.local/lib/perl5\""
+export PERL_MM_OPT="INSTALL_BASE=/home/jonah/.local/lib/perl5"
 
 #Colors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -48,6 +55,6 @@ if [ -d ~/.local/bin ]; then
     export PATH="${HOME}/.local/bin:${PATH}"
 fi
 
-if [ -f ~/.extrarc ]; then
-    . ~/.extrarc
-fi
+# if [ -n "${SSH_TTY}" ] && [ -f ~/.bashrc ]; then
+    # . ~/.bashrc
+# fi

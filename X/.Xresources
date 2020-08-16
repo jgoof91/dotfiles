@@ -8,7 +8,7 @@ Xft.lcdfilter: lcdfilter
 *.height: 30
 polybar.font: Monospace:size=22
 rofi.font: Monospace 22
-rofi.theme: ~/.cache/wal/colors-rofi-dark
+rofi.theme: gruvbox-dark-hard.rasi
 
 st.font: Monospace-22
 st.xfps: 1200

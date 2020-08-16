@@ -1,24 +1,16 @@
 #GEN HOTKEYS
 super + {_,shift +} Return
     {$TERMINAL,rofi -modi run -show run}
-super + e
-    $TERMINAL -e $EDITOR
-super + f
-    $TERMINAL -e nnn
-super + b
-    chromium-browser
-super + t
-    $TERMINAL -e htop
-super + w
-    rofi -modi window -show window
+super + {e,f,b,t,w}
+    {$TERMINAL -e $EDITOR,$TERMINAL -e $FILE,chromium-browser,$TERMINAL -e htop,rofi -modi window -show window}
 super + {_,shift +}BackSpace
     {prompt "Reboot Yes/No" "sudo -A reboot",prompt "Shutdown Yes/No" "sudo -A shutdown -h now"}
-super + m;{m,u,e}
-    {rclone-media m,rclone-media u, mediaexplorer}
+super + m;{m,u,e,t,c}
+    {rclone-media m,rclone-media u,mediaexplorer, mediaexplorer tv, mediaexplorer movie}
 XF86Audio{Raise,Lower}Volume
-    amixer -M set PCM 5%{+,-}
+    amixer -M set HDMI 5%{+,-}
 XF86AudioMute
-    amixer set PCM toggle
+    amixer set HDMI toggle
 
 #BSPWM
 #Move focused

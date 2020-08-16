@@ -9,9 +9,7 @@ shopt -s checkwinsize
 
 #Set vi mode
 set -o vi
-if [ -f ~/.profile ]; then
-    source ~/.profile
-fi
+. ~/.profile
 if [ -f ~/.aliasrc ]; then
     source ~/.aliasrc
 fi
@@ -89,5 +87,3 @@ dug() {
 if [ -f ~/.extrarc ]; then
     source ~/.extrarc
 fi
-
-cd || printf 'who cares\n'
