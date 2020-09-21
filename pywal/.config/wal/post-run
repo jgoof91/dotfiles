@@ -2,7 +2,6 @@
 
 . ~/.cache/wal/colors.sh
 
-ln -sf ~/.cache/wal/dunstrc ~/.config/dunst/dunstrc
 pkill dunst
 dunst -conf ~/.cache/wal/dunstrc &
 

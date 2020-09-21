@@ -1,8 +1,7 @@
 set modelines=0 nomodeline nocompatible
 
 "Plug.vim Plugins {{{
-silent! if plug#begin('~/.vim/plugged')
-        Plug 'scrooloose/nerdtree'
+if plug#begin('~/.vim/plugged')
         Plug 'scrooloose/nerdcommenter'
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
         Plug 'tpope/vim-surround'
@@ -11,31 +10,30 @@ silent! if plug#begin('~/.vim/plugged')
         Plug 'tpope/vim-fugitive'
         Plug 'tpope/vim-rhubarb'
         Plug 'jiangmiao/auto-pairs'
-        Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
         Plug 'AndrewRadev/splitjoin.vim'
         Plug 'terryma/vim-multiple-cursors'
         Plug 'airblade/vim-gitgutter'
         Plug 'w0rp/ale'
         Plug 'liuchengxu/vista.vim'
         Plug 'puremourning/vimspector'
-        Plug 'mhinz/vim-startify'
         Plug 'Yggdroot/indentLine', {'on': 'IndentLinesEnable'}
-        Plug 'itchyny/lightline.vim'
-        if has('python3')
-        endif
-        Plug 'prabirshrestha/async.vim'
-        Plug 'prabirshrestha/vim-lsp'
-        Plug 'prabirshrestha/asyncomplete.vim'
-        Plug 'prabirshrestha/asyncomplete-lsp.vim'
-        Plug 'prabirshrestha/asyncomplete-file.vim'
+        "Lsp
+        Plug 'natebosch/vim-lsc'
+        " Plug 'prabirshrestha/async.vim'
+        " Plug 'prabirshrestha/vim-lsp'
+        " " Plug 'mattn/vim-lsp-settings'
+        " Plug 'prabirshrestha/asyncomplete.vim'
+        " Plug 'prabirshrestha/asyncomplete-lsp.vim'
+        " Plug 'prabirshrestha/asyncomplete-file.vim'
         if has('python3')
             "Plug 'python-mode/python-mode'
-            Plug 'SirVer/ultisnips'
-            Plug 'honza/vim-snippets'
-            Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+            " Plug 'SirVer/ultisnips'
+            " Plug 'honza/vim-snippets'
+            " Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
             " Plug 'thomasfaingnaert/vim-lsp-snippets'
             " Plug 'thomasfaingnaert/vim-lsp-ultisnips'
         endif
+        "Colors
         Plug 'altercation/vim-colors-solarized'
         Plug 'tomasr/molokai'
         Plug 'chriskempson/vim-tomorrow-theme'
@@ -64,7 +62,6 @@ set autoindent
 set ruler
 set laststatus=2
 set showtabline=2
-set tabline=
 set foldmethod=marker
 set showcmd
 set showmode
@@ -92,7 +89,7 @@ set hidden
 set backspace=indent,eol,start
 set noshowmode
 set undofile
-set undodir=~/.vim/undo//
+set undodir=~/.vim/undo
 set nobackup
 set nowb
 set noswapfile
@@ -100,10 +97,7 @@ set noswapfile
 set background=dark
 set t_8f=[38;2;%lu;%lu;%lum
 set t_8b=[48;2;%lu;%lu;%lum
-try
-    colorscheme gruvbox
-catch
-endtry
+colorscheme gruvbox
 set t_Co=256
 set termguicolors
 set colorcolumn=80
@@ -112,18 +106,14 @@ if has('gui_running')
     set guioptions-=e
 endif
 "}}}
-"Platform Settings {{{
-if has('win64') || has('win32')
-    set shell=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
-    "set shellcmdFlag=-command
-    set shellquote=\"
-    set shellxquote=
-endif
-
-if has('unix')
-    hi clear OverLength
-    hi OverLength term=underline ctermfg=9 guifg=Magenta
-endif
+" Highline {{{
+highlight! Search gui=underline guibg=#ebdbb2 guifg=#282828
+highlight! TabLine gui=NONE guibg=#3c3836 guifg=#d5c4a1
+highlight! TabLineSel gui=underline guibg=#a89984 guifg=#282828
+highlight! Pmenu gui=NONE guibg=#504945 guifg=#fe8019
+highlight! PmenuSel gui=bold guibg=#3c3836 guifg=#fe8019
+highlight! User2 guibg=#3c3836 guifg=#bdae93
+highlight! User3 guibg=#3c3836 guifg=#cc241d
 "}}}
 "Autocmd {{{
 autocmd BufReadPost *aliasrc set filetype=sh
@@ -172,18 +162,6 @@ augroup StartifyNerdtree
     "autocmd VimEnter * silent! NERDTree | wincmd p
 augroup END
 "}}}
-"Startify {{{
-let g:startify_bookmarks = ['~/.vimrc', '~/.bashrc', '~/.profile', '~/.aliasrc']
-let g:startify_change_to_dir = 1
-"}}}
-"NERDTree {{{
-let NERDTreeIngore = ['\.pyc$', '\.pyo$', '__pycache__$', '\.gitingore']
-let NERDTreeWinSize = 30
-let NERDTreeShowHidden=1
-let g:NERDTreeDirArrowExpandable = '>'
-let g:NERDTreeDirArrowCollapsible = '<'
-nnoremap <silent> <Leader>f :NERDTreeToggle<CR>
-"}}}
 "NERDCommenter {{{
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
@@ -219,25 +197,89 @@ let g:lightline = {
             \ 'tabandbufline': 'tabsel'
             \ }
             \ }
+=======
+"Clear the over 80 char red highligths and replace it with red char
+hi clear OverLength
+" }}}
+" Statusline and Tabline {{{
+"                            BACKGROUND  FOREGROUND
+let g:mode_map = {
+    \ 'n': ['NORMAL',        ['#7c6f64', '#282828']],
+    \ 'v': ['VISUAL',        ['#fe8019', '#1d2021']],
+    \ 'V': ['V-LINE',        ['#fe8019', '#1d2021']],
+    \ "\<C-V>": ['V-BLOCK',  ['#fe8019', '#1d2021']],
+    \ 's': ['SELECT',        ['#8ec07c', '#1d2021']],
+    \ 'S': ['S-LINE',        ['#8ec07c', '#1d2021']],
+    \ "\<C-S>": ['S-BLOCK',  ['#8ec07c', '#1d2021']],
+    \ 'i': ['INSERT',        ['#83a598', '#1d2021']],
+    \ 'R': ['REPLACE',       ['#b8bb26', '#1d2021']],
+    \ 'Rv': ['V-REPLACE',    ['#b8bb26', '#1d2021']],
+    \ 'c': ['COMMAND',       ['#d3869b', '#1d2021']],
+    \ 'cv': ['VIM-EX',       ['#3c3836', '#1d2021']],
+    \ 'ce': ['EX',           ['#3c3836', '#1d2021']],
+    \ 'r': ['PROMPT',        ['#3c3836', '#1d2021']],
+    \ 'rm': ['MORE',         ['#3c3836', '#1d2021']],
+    \ 'r?': ['CONFIRM',      ['#3c3836', '#1d2021']],
+    \ '?': ['SHELL',         ['#3c3836', '#1d2021']],
+    \ 't': ['TERMINAL',      ['#98971a', '#1d2021']],
+    \ }
+
+set statusline=
+set statusline+=%#StatusLine1#\ %{StatusMode()}
+set statusline+=\ %2*%{StatusPaste()}
+set statusline+=\ %{StatusBranch()}
+set statusline+=\ %{StatusGit()}
+set statusline+=\ %3*%{StatusAle()}
+set statusline+=\ %2*%{StatusVista()}
+set statusline+=%=%y\ [%{&fenc}]\ [%{&ff}]\ %#StatusLine2#[line:%l/%L\ col:%c
+set statusline+=\ %p]
+set tabline=%!TabAndBufLine()
+
+function! StatusPaste() abort
+    return &paste!=#""?" PASTE":""
+endfunction
+
+function! StatusMode() abort
+    let [l:bg,l:fg] = g:mode_map[mode()][1]
+    exe 'hi! StatusLine1 gui=bold guibg=' . l:bg . ' guifg=' . l:fg
+    exe 'hi! StatusLine2 guibg=' . l:bg . ' guifg=' . l:fg
+    return g:mode_map[mode()][0]
+endfunction
+
+function! StatusBranch() abort
+	let l:h = FugitiveHead()
+	if(l:h !=# "")
+		return "[" . l:h . "]"
+    else
+		return ""
+	endif
+endfunction
+>>>>>>> raspberrypi
 
 function! StatusGit() abort
   let [a,m,r] = GitGutterGetHunkSummary()
-  return printf('+%d ~%d -%d', a, m, r)
+  return printf('[+%d ~%d -%d]', a, m, r)
 endfunction
 
 function! StatusVista() abort
-    return get(b:, 'vista_nearest_method_or_function', '')
+    let l:v = get(b:, 'vista_nearest_method_or_function', '')
+    return l:v !=# '' ? '[' . l:v . ']' : ''
 endfunction
 
 function! StatusAle() abort
     let l:count = ale#statusline#Count(bufnr(''))
     let l:all_error = l:count.error + l:count.style_error
     let l:non_error = l:count.total - l:all_error
-    return l:count.total == 0 ? 'OK' : printf('%dW %dE, %s',
-                \ l:non_error,
-                \ l:all_error,
-                \ ale#statusline#FirstProblem(bufnr('%'), 'E')
-                \ )
+    if(l:count.total != 0)
+        return printf('[%dW %dE, %s]',
+                    \ l:non_error,
+                    \ l:all_error,
+                    \ ale#statusline#FirstProblem(bufnr('%'), 'E')
+                    \ )
+    else
+        return ''
+    endif
+
 endfunction
 
 function! s:BufName(buf)
@@ -295,14 +337,105 @@ function! s:TabLine()
     return [l:before, l:current, l:after]
 endfunction
 
-function! TabAndBufLine()
+function! TabAndBufLine() abort
+    let l:s=''
     if tabpagenr('$') > 1
-        return s:TabLine()
+        let l:items = s:TabLine()
     else
-        return s:BufLine()
+        let l:items = s:BufLine()
     endif
-    return [[],[],[]]
+    for l:i in range(3)
+        if(l:i == 1)
+            let l:s .='%#TabLineSel#'
+        else
+            let l:s .='%#TabLine#'
+        endif
+        for l:ii in l:items[l:i]
+            if exists("l:ii")
+                let l:s .= l:ii . ' '
+            else
+                continue
+            endif
+        endfor
+    endfor
+    return l:s . '%#TabLineFill#'
 endfunction
+"}}}
+"Mappings {{{
+"Shebang
+inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype)
+
+"Mapping for leader
+let mapleader=","
+"Split Windows Mappings
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+" Split Window Resize
+nnoremap <LEADER>+ <C-W><C-+>
+nnoremap <LEADER>- <C-W><C-->
+nnoremap <LEADER>< <C-W><C-<>
+nnoremap <LEADER>> <C-W><C->>
+" Misc mappings
+nnoremap ; :
+nnoremap j gj
+nnoremap k gk
+nnoremap <Leader>t :tabe<CR>:ter ++curwin<CR>
+nnoremap <silent><F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+nnoremap <F4> :w<BAR>:so $MYVIMRC<CR>
+inoremap <C-F> <C-X><C-F>
+"Save mappings
+nnoremap <LEADER>w :w<CR>
+nnoremap <LEADER>W :wa<CR>
+"Buffer mappings
+nnoremap [b :bprev<CR>
+nnoremap ]b :bnext<CR>
+"Tab mappings
+nnoremap [t :tabp<CR>
+nnoremap ]t :tabn<CR>
+" Make
+nnoremap <LEADER>m :make<CR>
+"}}}
+" NETRW {{{
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_winsize = 30
+let g:netrw_altv = 0
+nnoremap <LEADER>f :Vexplore<CR>
+nnoremap <LEADER>F :Hexplore<CR>
+nnoremap <LEADER><C-f> :Explore<CR>
+augroup NETRW_GROUP
+    au!
+    au VimEnter * if(argc() == 0) | exe ':Vexplore' | wincmd l | endif
+    au BufEnter * if(winnr('$') == 1 && getbufvar(winbufnr(winnr()), '&filetype') ==# 'netrw') | exe ':q' | endif
+augroup END
+" }}}
+"NERDCommenter {{{
+let g:NERDSpaceDelims = 1
+let g:NERDCompactSexyComs = 1
+let g:NERDDefaultAlign = 'left'
+let g:NERDAltDelims_java = 1
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**', 'right': '*/' } }
+let g:NERDCommentEmptyLines = 1
+let g:NERDTrimTrailingWhitespace = 1
+let g:NERDToggleCheckAllLines = 1
+"}}}
+"LSC {{{
+let g:lsc_auto_map = v:true
+let g:lsc_server_commands = {
+            \ 'c': 'clangd-9',
+            \ 'cpp': 'clangd-9',
+            \ 'objc': 'clangd-9',
+            \ 'objcpp': 'clangd-9',
+            \ 'python': 'pyls',
+            \ }
+let g:lsc_autocomplete_length = 1
+augroup LSC_PCLOSE
+    au!
+    au CompleteDone * silent! pclose
+augroup END
 "}}}
 "Ale {{{
 let g:ale_sign_column_always = 1
@@ -310,82 +443,6 @@ let g:airline#extensions#ale#enabled = 1
 "}}}
 "Vista {{{
 nnoremap <silent><Leader>v :Vista!!<CR>
-"}}}
-"UndoTree {{{
-nnoremap <silent><F6> :UndotreeToggle<CR>
-"}}}
-"Python-mode {{{
-let g:pymode_python = 'python3'
-let g:pymode_trim_whitespaces = 1
-let g:pymode_rope_completion = 1
-let g:pymode_rope_complete_on_dot = 1
-"}}}
-"Vim-lsp {{{
-let g:lsp_diagnostics_enabled = 0
-if executable('pyls')
-    " pip install python-language-server
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
-if executable('clangd-9')
-    " Install clangd-9
-    au User lsp_setup call lsp#register_server({
-                \ 'name': 'clangd',
-                \ 'cmd': {server_info->['clangd']},
-                \ 'whitelist': ['c', 'cpp']
-                \ })
-endif
-"AsyncComplete-File
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-            \ 'name': 'file',
-            \ 'whitelist': ['*'],
-            \ 'priority': 10,
-            \ 'completor': function('asyncomplete#sources#file#completor')
-            \ }))
-" AsyncComplete-Ultisnip
-if has('python3')
-    au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-                \ 'name': 'ultisnips',
-                \ 'whitelist': ['*'],
-                \ 'priority': 10,
-                \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-                \ }))
-endif
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    setlocal foldmethod=expr
-                \ foldexpr=lsp#ui#vim#folding#foldexpr()
-                \ foldtext=lsp#ui#vim#folding#foldtext()
-    nmap <buffer> gd <plug>(lsp-definition)
-    nmap <buffer> <f2> <plug>(lsp-rename)
-    "refer to doc to add more commands
-endfunction
-
-augroup lsp_install
-    au!
-    "call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-"inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<C-g>u\<cr>"
-inoremap <C-Space> <Plug>(asyncomplete_force_refresh)
 "}}}
 "Ultisnips {{{
 if has('python3')
@@ -396,7 +453,10 @@ if has('python3')
 endif
 "}}}
 "IndentLine {{{
-autocmd vimenter * IndentLinesEnable
+augroup INDENT_LINE_ENABLE
+    au!
+    autocmd vimenter * IndentLinesEnable
+augroup END
 let g:indentLine_enabled = 1
 let g:indentLine_color_term = 190
 let g:indentLine_color_gui = '#616161'
@@ -406,6 +466,7 @@ let g:indentLine_char = '|'
 nnoremap <silent><Leader>; :Files<CR>
 "}}}
 "Function {{{
+<<<<<<< HEAD
 "s:LastBuffer Checks to see if any bufers is open that is NERDTree or
 "Vista or both, if so they are closed
 function! s:LastBuffer() abort
@@ -430,19 +491,18 @@ function! s:LastBuffer() abort
     endif
 endfunction
 autocmd bufenter * silent! call s:LastBuffer()
+=======
+>>>>>>> raspberrypi
 "}}}
-"Misc {{{
-highlight Pmenu guibg=brown gui=bold
-highlight Pmenu ctermbg=gray gui=bold
+" Autocmd {{{
+augroup MISC_AUGROUP
+    autocmd!
+    autocmd BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+    autocmd FileType python setlocal makeprg=python3\ %
+    autocmd FileType sh nnoremap <buffer> <C-b> i "${}"<ESC>hi
+augroup END
 
-"Clear the over 80 char red highligths and replace it with red char
-hi clear OverLength
-hi OverLength term=underline ctermfg=9 guifg=Magenta
-
-"Autocmd
-autocmd FileType sh nnoremap <buffer> <C-b> i "${}"<ESC>hi
-autocmd! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 "autocmd VimResized * wincmd =
 "let &winheight = &lines * 7 / 10
 "let &winwidth = &columns * 7 / 10

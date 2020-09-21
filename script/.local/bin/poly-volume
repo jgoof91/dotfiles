@@ -1,8 +1,8 @@
 #!/bin/sh
-toggle="$(amixer sget Master | grep -oE '\[(on|off)\]')"
+toggle="$(amixer sget HDMI | grep -oE '\[(on|off)\]')"
 
 if [ "${toggle}" = "[off]" ]; then
-    printf "🔇 muted"
+    printf "🔇 muted\n"
 else
-    printf "%s/100%%" "$(amixer sget Master | perl -ne 'print $1 if /(\d*)%/')"
+    printf "%s/100\n" "$(amixer sget HDMI | perl -ne 'print $1 if /(\d*)%/')"
 fi
