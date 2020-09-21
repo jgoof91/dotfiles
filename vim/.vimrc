@@ -110,100 +110,17 @@ endif
 highlight! Search gui=underline guibg=#ebdbb2 guifg=#282828
 highlight! TabLine gui=NONE guibg=#3c3836 guifg=#d5c4a1
 highlight! TabLineSel gui=underline guibg=#a89984 guifg=#282828
-highlight! Pmenu gui=NONE guibg=#504945 guifg=#fe8019
+highlight! Pmenu gui=NONE guibg=#504945 guifg=#fe8019 
 highlight! PmenuSel gui=bold guibg=#3c3836 guifg=#fe8019
 highlight! User2 guibg=#3c3836 guifg=#bdae93
 highlight! User3 guibg=#3c3836 guifg=#cc241d
-"}}}
-"Autocmd {{{
-autocmd BufReadPost *aliasrc set filetype=sh
-autocmd BufReadPost *neomuttrc set filetype=neomuttrc
-autocmd BufWritePost *Xresources,*Xdefaults !xrdb -merge  %
-autocmd BufWritePost *bspwmrc !bspc wm -r
-autocmd BufWritePost *sxhkdrc !pkill -USR1 -x sxhkd
-autocmd BufWritePre * %s/\s\+$//e
-"}}}
-"Mappings {{{
-"Shebang
-inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype)
 
-"Mapping for leader
-let mapleader=","
-"Split Windows Mappings
-nnoremap <C-H> <C-W><C-H>
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-"Misc mappings
-nnoremap ; :
-nnoremap j gj
-nnoremap k gk
-nnoremap <silent><C-G><C-T> :tabe<CR>:ter ++curwin<CR>
-nnoremap <silent><F4> :so $MYVIMRC<CR>
-inoremap <C-F> <C-X><C-F>
-"Save mappings
-nnoremap <silent><C-s> :w<CR>
-nnoremap <silent><C-S> :wa<CR>
-inoremap <silent><C-s> <ESC>:w<CR>li
-"Quit mappings
-nnoremap <silent><C-q> :q<CR>
-nnoremap <silent><C-Q> :qa<CR>
-"Buffer mappings
-nnoremap [b :bprev<CR>
-nnoremap ]b :bnext<CR>
-"Tab mappings
-nnoremap [t :tabp<CR>
-nnoremap ]t :tabn<CR>
-"}}}
-"Startup for Startify and NERDTree {{{
-augroup StartifyNerdtree
-    autocmd StdinReadPre * let s:std_in = 1
-    autocmd VimEnter * nested if !argc() && !exists('s:std_in') | silent! Startify | silent! NERDTree | wincmd p | endif
-    "autocmd VimEnter * silent! NERDTree | wincmd p
-augroup END
-"}}}
-"NERDCommenter {{{
-let g:NERDSpaceDelims = 1
-let g:NERDCompactSexyComs = 1
-let g:NERDDefaultAlign = 'left'
-let g:NERDAltDelims_java = 1
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**', 'right': '*/' } }
-let g:NERDCommentEmptyLines = 1
-let g:NERDTrimTrailingWhitespace = 1
-let g:NERDToggleCheckAllLines = 1
-"}}}
-"Lightline {{{
-let g:lightline = {
-            \ 'colorscheme': 'gruvbox',
-            \ 'active': {
-            \ 'left': [['mode', 'paste'], ['git-branch', 'git-gutter']],
-            \ 'right': [['lineinfo'], ['percent'],
-            \ ['fileformat', 'fileencoding', 'filetype'], ['ale-error'], ['vista']]
-            \ },
-            \ 'tabline': {
-            \ 'left': [['tabandbufline']],
-            \ 'right': [[]]
-            \ },
-            \ 'component_function': {
-            \ 'git-branch': 'fugitive#head',
-            \ 'git-gutter': 'StatusGit',
-            \ 'ale-error': 'StatusAle',
-            \ 'vista': 'StatusVista'
-            \ },
-            \ 'component_expand': {
-            \ 'tabandbufline': 'TabAndBufLine'
-            \ },
-            \ 'component_type': {
-            \ 'tabandbufline': 'tabsel'
-            \ }
-            \ }
-=======
 "Clear the over 80 char red highligths and replace it with red char
 hi clear OverLength
 " }}}
 " Statusline and Tabline {{{
 "                            BACKGROUND  FOREGROUND
-let g:mode_map = {
+let g:mode_map = {                     
     \ 'n': ['NORMAL',        ['#7c6f64', '#282828']],
     \ 'v': ['VISUAL',        ['#fe8019', '#1d2021']],
     \ 'V': ['V-LINE',        ['#fe8019', '#1d2021']],
@@ -254,7 +171,6 @@ function! StatusBranch() abort
 		return ""
 	endif
 endfunction
->>>>>>> raspberrypi
 
 function! StatusGit() abort
   let [a,m,r] = GitGutterGetHunkSummary()
@@ -409,7 +325,7 @@ nnoremap <LEADER><C-f> :Explore<CR>
 augroup NETRW_GROUP
     au!
     au VimEnter * if(argc() == 0) | exe ':Vexplore' | wincmd l | endif
-    au BufEnter * if(winnr('$') == 1 && getbufvar(winbufnr(winnr()), '&filetype') ==# 'netrw') | exe ':q' | endif
+    au BufEnter * if(winnr('$') == 1 && getbufvar(winbufnr(winnr()), '&filetype') ==# 'netrw') | exe ':q' | endif 
 augroup END
 " }}}
 "NERDCommenter {{{
@@ -466,33 +382,6 @@ let g:indentLine_char = '|'
 nnoremap <silent><Leader>; :Files<CR>
 "}}}
 "Function {{{
-<<<<<<< HEAD
-"s:LastBuffer Checks to see if any bufers is open that is NERDTree or
-"Vista or both, if so they are closed
-function! s:LastBuffer() abort
-    let l:winc = winnr('$')
-    if tabpagenr('$') == 1
-        if l:winc == 1
-            let l:window = bufname(winbufnr('%'))
-            if l:window ==# t:NERDTreeBufName
-                :qall
-            elseif l:window ==# "__vista__" || vista#sidebar#IsOpen()
-                :qall
-            endif
-        elseif l:winc == 2
-            let l:window1 = bufname(winbufnr(1))
-            let l:window2 = bufname(winbufnr(2))
-            if l:window1 == t:NERDTreeBufName &&
-                        \ l:window2 ==# "__vista__" &&
-                        \ vista#sidebar#IsOpen()
-                :qall
-            endif
-        endif
-    endif
-endfunction
-autocmd bufenter * silent! call s:LastBuffer()
-=======
->>>>>>> raspberrypi
 "}}}
 " Autocmd {{{
 augroup MISC_AUGROUP

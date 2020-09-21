@@ -3,12 +3,8 @@ apps=(\
     sxhkd
     polybar
     dunst
-<<<<<<< HEAD
     picom
     unclutter
-=======
-    xcape
->>>>>>> raspberrypi
     )
 
 for app in ${apps[@]}; do
@@ -47,10 +43,5 @@ bspc config normal_border_color '#928374'
 bspc config focused_border_color '#cc241d'
 bspc config presel_border_color '#d65d0e'
 
-bspc rule -a 'chromium' desktop='^2'
-<<<<<<< HEAD
-
-#bspc config external_rules_command ~/.config/bpswm/external_rules
-=======
+bspc rule -a 'chromium' desktop='^1'
 bspc rule -a 'vlc' desktop='^2' state=fullscreen follow=on 
->>>>>>> raspberrypi

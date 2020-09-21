@@ -59,15 +59,9 @@ foreground = $(wal.foreground)
 
 module-margin-left = 1
 module-margin-right = 1
-<<<<<<< HEAD
 modules-left = bspwm
 modules-center = xwindow
 modules-right = portage vol bat date
-=======
-modules-left = bspwm xwindow
-modules-center = 
-modules-right = rclone packupgrade vol date 
->>>>>>> raspberrypi
 wm-restack = bspwm
 
 
@@ -116,11 +110,7 @@ label-separator-foreground = ${wal.foreground}
 [module/vol]
 type = internal/alsa
 master-soundcard = default
-<<<<<<< HEAD
 master-mixer = Master
-=======
-master-mixer = HDMI
->>>>>>> raspberrypi
 
 format-volume-foreground = ${wal.foreground}
 
@@ -146,26 +136,7 @@ label-discharging-foreground = ${wal.foreground}
 
 poll-interval = 5
 
-<<<<<<< HEAD
 [module/portage]
 type = custom/script
 exec = portwatch
 interval = 30
-=======
-[module/packupgrade]
-type = custom/script
-exec = /home/jonah/.local/bin/pack-upgrade
-interval = 36000
-format-foreground = ${colors.yellow}
-click-left = /home/jonah/.local/bin/pack-upgrade left
-click-right = /home/jonah/.local/bin/pack-upgrade right
-
-[module/rclone]
-type = custom/script
-exec = /home/jonah/.local/bin/poly-rclone
-format-foreground = ${colors.yellow}
-click-left = /home/jonah/.local/bin/poly-rclone left
-click-right = /home/jonah/.local/bin/poly-rclone right
-
-interval = 3000
->>>>>>> raspberrypi
