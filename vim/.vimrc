@@ -1,4 +1,4 @@
-set modelines=0 nomodeline nocompatible
+set modelines=0 nomodeline
 
 "Plug.vim Plugins {{{
 if plug#begin('~/.vim/plugged')
@@ -19,20 +19,6 @@ if plug#begin('~/.vim/plugged')
         Plug 'Yggdroot/indentLine', {'on': 'IndentLinesEnable'}
         "Lsp
         Plug 'natebosch/vim-lsc'
-        " Plug 'prabirshrestha/async.vim'
-        " Plug 'prabirshrestha/vim-lsp'
-        " " Plug 'mattn/vim-lsp-settings'
-        " Plug 'prabirshrestha/asyncomplete.vim'
-        " Plug 'prabirshrestha/asyncomplete-lsp.vim'
-        " Plug 'prabirshrestha/asyncomplete-file.vim'
-        if has('python3')
-            "Plug 'python-mode/python-mode'
-            " Plug 'SirVer/ultisnips'
-            " Plug 'honza/vim-snippets'
-            " Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
-            " Plug 'thomasfaingnaert/vim-lsp-snippets'
-            " Plug 'thomasfaingnaert/vim-lsp-ultisnips'
-        endif
         "Colors
         Plug 'altercation/vim-colors-solarized'
         Plug 'tomasr/molokai'
@@ -101,26 +87,26 @@ colorscheme gruvbox
 set t_Co=256
 set termguicolors
 set colorcolumn=80
-"let g:solarized_termcolors=256
 if has('gui_running')
     set guioptions-=e
 endif
 "}}}
 " Highline {{{
+highlight! Normal guibg=None guifg=None
 highlight! Search gui=underline guibg=#ebdbb2 guifg=#282828
 highlight! TabLine gui=NONE guibg=#3c3836 guifg=#d5c4a1
 highlight! TabLineSel gui=underline guibg=#a89984 guifg=#282828
-highlight! Pmenu gui=NONE guibg=#504945 guifg=#fe8019 
+highlight! Pmenu gui=NONE guibg=#504945 guifg=#fe8019
 highlight! PmenuSel gui=bold guibg=#3c3836 guifg=#fe8019
-highlight! User2 guibg=#3c3836 guifg=#bdae93
-highlight! User3 guibg=#3c3836 guifg=#cc241d
+highlight! User1 guibg=#3c3836 guifg=#bdae93
+highlight! User2 guibg=#3c3836 guifg=#cc241d
 
 "Clear the over 80 char red highligths and replace it with red char
 hi clear OverLength
 " }}}
 " Statusline and Tabline {{{
 "                            BACKGROUND  FOREGROUND
-let g:mode_map = {                     
+let g:mode_map = {
     \ 'n': ['NORMAL',        ['#7c6f64', '#282828']],
     \ 'v': ['VISUAL',        ['#fe8019', '#1d2021']],
     \ 'V': ['V-LINE',        ['#fe8019', '#1d2021']],
@@ -143,16 +129,17 @@ let g:mode_map = {
 
 set statusline=
 set statusline+=%#StatusLine1#\ %{StatusMode()}
-set statusline+=\ %2*%{StatusPaste()}
-set statusline+=\ %{StatusBranch()}
+set statusline+=\ %1*%{StatusPaste()}
+set statusline+=%{StatusBranch()}
 set statusline+=\ %{StatusGit()}
-set statusline+=\ %3*%{StatusAle()}
-set statusline+=\ %2*%{StatusVista()}
+set statusline+=\ %2*%{StatusAle()}
+set statusline+=\ %1*%{StatusVista()}
 set statusline+=%=%y\ [%{&fenc}]\ [%{&ff}]\ %#StatusLine2#[line:%l/%L\ col:%c
 set statusline+=\ %p]
 set tabline=%!TabAndBufLine()
 
 function! StatusPaste() abort
+    
     return &paste!=#""?" PASTE":""
 endfunction
 
@@ -293,17 +280,6 @@ nnoremap <LEADER>+ <C-W><C-+>
 nnoremap <LEADER>- <C-W><C-->
 nnoremap <LEADER>< <C-W><C-<>
 nnoremap <LEADER>> <C-W><C->>
-" Misc mappings
-nnoremap ; :
-nnoremap j gj
-nnoremap k gk
-nnoremap <Leader>t :tabe<CR>:ter ++curwin<CR>
-nnoremap <silent><F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
-nnoremap <F4> :w<BAR>:so $MYVIMRC<CR>
-inoremap <C-F> <C-X><C-F>
-"Save mappings
-nnoremap <LEADER>w :w<CR>
-nnoremap <LEADER>W :wa<CR>
 "Buffer mappings
 nnoremap [b :bprev<CR>
 nnoremap ]b :bnext<CR>
@@ -312,6 +288,19 @@ nnoremap [t :tabp<CR>
 nnoremap ]t :tabn<CR>
 " Make
 nnoremap <LEADER>m :make<CR>
+" Terminal
+if has('nvim')
+    nnoremap <Leader>t :tabe<BAR>:ter<CR>
+else
+    nnoremap <Leader>t :tabe<CR>:ter ++curwin<CR>
+endif
+" Misc mappings
+nnoremap ; :
+nnoremap j gj
+nnoremap k gk
+nnoremap <silent><F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+nnoremap <F4> :so $MYVIMRC<CR>
+noremap <C-F> <C-X><C-F>
 "}}}
 " NETRW {{{
 let g:netrw_banner = 0
@@ -325,7 +314,7 @@ nnoremap <LEADER><C-f> :Explore<CR>
 augroup NETRW_GROUP
     au!
     au VimEnter * if(argc() == 0) | exe ':Vexplore' | wincmd l | endif
-    au BufEnter * if(winnr('$') == 1 && getbufvar(winbufnr(winnr()), '&filetype') ==# 'netrw') | exe ':q' | endif 
+    au BufEnter * if(winnr('$') == 1 && getbufvar(winbufnr(winnr()), '&filetype') ==# 'netrw') | exe ':q' | endif
 augroup END
 " }}}
 "NERDCommenter {{{
@@ -388,10 +377,7 @@ augroup MISC_AUGROUP
     autocmd!
     autocmd BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-    autocmd FileType python setlocal makeprg=python3\ %
-    autocmd FileType sh nnoremap <buffer> <C-b> i "${}"<ESC>hi
 augroup END
-
 "autocmd VimResized * wincmd =
 "let &winheight = &lines * 7 / 10
 "let &winwidth = &columns * 7 / 10

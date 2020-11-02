@@ -1,0 +1,52 @@
+env:
+  TERM: xterm-256color
+
+window:
+  padding:
+    x: 0
+    y: 0
+  decorations: none
+  start_mode: Windowed
+  class: alacritty
+  dynamic_title: true
+
+scrolling:
+  history: 1000
+  multiplier: 3
+
+font:
+  size: 8
+  normal:
+    family: Fira Code Nerd Font Mono
+    style: Regular
+  bold:
+    family: Fira Code Nerd Font Mono
+    style: Bold
+  italic:
+    family: Fira Code Nerd Font Mono
+    style: Italic
+  bold_italic:
+    family: Fira Code Nerd Font Mono
+    style: Bold Italic
+  offset:
+    x: 0
+    y: 0
+
+draw_bold_text_with_bright_colors: true
+
+background_opacity: 0.8
+
+mouse:
+  double_click: { threshold: 300 }
+  triple_click: { threshold: 300 }
+  hide_when_typing: true
+  
+selection:
+  semantic_escape_chars: ",|`\"' ()[]{}<>"
+  save_to_clipboard: true
+
+cursor:
+  style: Block
+  unfocused_hollow: true
+
+live_config_reload: true

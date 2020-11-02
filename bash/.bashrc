@@ -9,11 +9,15 @@ shopt -s checkwinsize
 
 #Set vi mode
 set -o vi
-. ~/.profile
-if [ -f ~/.aliasrc ]; then
-    source ~/.aliasrc
-fi
+
+#Source profile, aliasrc and fzf.bash
+[ -f ~/.profile ] && . ~/.profile
+[ -f ~/.aliasrc ] && . ~/.aliasrc
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+bat_prompt() {
+    printf '%s' $(< /sys/class/power_supply/*/capacity)
+}
 
 git_prompt() {
     local branch stats
@@ -26,7 +30,16 @@ git_prompt() {
     fi
 }
 
-export PS1="\[${YELLOW}\][\[${GREEN}\]\u\[${YELLOW}\]@\[${GREEN}\]\h\[${YELLOW}\]][\[${LBLUE}\]\w\[${YELLOW}\]]\[${RED}\]\$(git_prompt)\[${YELLOW}\]\$\[${RESET}\] "
+case $(tty) in
+    /dev/tty[0-9]*)
+        for i in /sys/class/power_supply/*/type; do
+            [ "$(< $i)" = 'Battery' ] && export PS1="\[${YELLOW}\][\[${GREEN}\]\u\[${YELLOW}\]@\[${GREEN}\]\h\[${YELLOW}\]][\[${LBLUE}\]\w\[${YELLOW}\]][\[${GREEN}\]\$(bat_prompt)\[${YELLOW}\]]\[${RED}\]\$(git_prompt)\[${YELLOW}\]\$\[${RESET}\] "
+        done
+        ;;
+    *)
+        export PS1="\[${YELLOW}\][\[${GREEN}\]\u\[${YELLOW}\]@\[${GREEN}\]\h\[${YELLOW}\]][\[${LBLUE}\]\w\[${YELLOW}\]]\[${RED}\]\$(git_prompt)\[${YELLOW}\]\$\[${RESET}\] "
+        ;;
+esac
 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then

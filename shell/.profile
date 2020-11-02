@@ -1,7 +1,7 @@
 export LANG="en_US.UTF-8"
-export TERMINAL="st"
+export TERMINAL="alacritty"
 export FILE="vifm"
-export BROWSER="lynx"
+export BROWSER="firefox-bin"
 export PAGER="less"
 export EDITOR="nvim"
 export VISUAL="${EDITOR}"
@@ -48,7 +48,7 @@ export LCYAN="\e[96m"
 export WHITE="\e[97m"
 export RESET="\e[0m"
 
-for editor in nvim vim vi nano; do
+for editor in nvim vim emacs vi nano; do
         if command -v "${editor}" >/dev/null; then
                 export EDITOR="${editor}"
                 export VISUAL="${editor}"
@@ -57,10 +57,5 @@ for editor in nvim vim vi nano; do
         fi
 done
 
-if [ -d ~/.local/bin ]; then
-    export PATH="${HOME}/.local/bin:${PATH}"
-fi
-
-# if [ -n "${SSH_TTY}" ] && [ -f ~/.bashrc ]; then
-    # . ~/.bashrc
-# fi
+[ -d ~/.local/bin ] && export PATH="${HOME}/.local/bin:${PATH}"
+[ -d ~/.cargo/bin ] && export PATH="${HOME}/.cargo/bin:${PATH}"
