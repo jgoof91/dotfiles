@@ -1,0 +1,1 @@
+pidof -x "syncthing" &>/dev/null || setsid -f syncthing --no-browser &>/dev/null

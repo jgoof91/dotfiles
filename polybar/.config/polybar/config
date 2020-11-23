@@ -61,7 +61,7 @@ module-margin-left = 1
 module-margin-right = 1
 modules-left = bspwm
 modules-center = xwindow
-modules-right = spotify vol bat date
+modules-right = spotify mail package vol bat date
 wm-restack = bspwm
 
 
@@ -152,8 +152,22 @@ poll-interval = 5
 
 [module/spotify]
 type = custom/script
-exec = poly-music
+exec = poly-spotifyd
 exec-if = pgrep -x spotifyd
 tail = true
-click-left = $TERMINAL -e spt
-click-right = nextsong
+click-left = poly-spotifyd left
+click-right = poly-spotifyd right
+
+[module/package]
+type = custom/script
+exec = poly-package
+click-left = poly-package left
+click-middle = poly-package middle
+click-right = poly-package right
+
+[module/mail]
+type = custom/script
+exec = poly-mail
+poll-interval = 60
+click-left = poly-mail left
+click-right = poly-mail right

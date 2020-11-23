@@ -1,9 +1,10 @@
-set realname = "Jonah Smith"
 set mbox_type = maildir
 set header_cache = ~/.cache/mutt/headers
 set message_cachedir = ~/.cache/mutt/messages
 set mail_check = 120
-set index_format = "%4C %Z %{%b %D} %-15.15L (%?l?%4l&%4c?) %s"
+set index_format = "%4C %Z %{%b %D} (%4c) %-25.25L %?X?? %s"
+auto_view text/html
+alternative_order text/plain text/enriched text/html
 
 #sidebar
 set sidebar_visible =  yes
@@ -26,19 +27,27 @@ bind index,pager \Cj sidebar-next
 bind index,pager \Cl sidebar-open
 bind index,pager \Co sidebar-toggle-visible
 
+#keybinding
+bind index g noop
+bind index gg first-entry
+bind index G last-entry
+bind index,pager,attach h exit
+bind index l display-message
+bind index L limit
+bind browser h goto-parent
+bind browser l select-entry
+bind pager,browser gg top-page
+bind pager,browser G bottom-page
+bind index,pager,browser d half-down
+bind index,pager,browser u half-up
 
-set nm_default_uri = 'notmuch:///home/jonah/Mail'
-set virtual_spoolfile = yes
-virtual-mailboxes "inbox" "notmuch://?query=tag:inbox"
-virtual-mailboxes "archive" "notmuch://?query=tag:archive"
-virtual-mailboxes "sent" "notmuch://?query=tag:sent"
-virtual-mailboxes "unread" "notmuch://?query=tag:unread"
-virtual-mailboxes "hotmail" "notmuch://?query=tag:hotmail"
-virtual-mailboxes "gmail" "notmuch://?query=tag:gmail"
-virtual-mailboxes "grim" "notmuch://?query=tag:grim"
-virtual-mailboxes "bill" "notmuch://?query=tag:bill"
-virtual-mailboxes "spam" "notmuch://?query=tag:spam"
-virtual-mailboxes "sec" "notmuch://?query=tag:sec"
+#folder hook
+folder-hook . "set sort=reverse-date-sent"
 
+#sources
+#account
+source ~/.config/neomutt/account.neomuttrc
+#notmuch
+source ~/.config/neomutt/notmuch.neomuttrc
 #color
 source ~/.config/neomutt/color/gruvbox.neomuttrc

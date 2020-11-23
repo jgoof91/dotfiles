@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if ! pgrep -x spotifyd > /dev/null; then
+    spotifyd
+    sleep 1
+    pgrep -x spotifyd > /dev/null || notify-send 'Spotifyd: Wrong Password'
+else
+    notify-send 'Spotifyd is Running'
+fi
+$TERMINAL -e 'spt' &

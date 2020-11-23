@@ -1,0 +1,26 @@
+#!/bin/sh
+
+case "${1}" in
+    left)
+        setsid -f $TERMINAL -e spt
+        exit
+        ;;
+    right)
+        nextsong
+        exit
+        ;;
+esac
+
+icon=""
+
+while true; do
+    if pgrep -x spotifyd >/dev/null; then
+        status="$(playerctl --player=spotifyd metadata --format '{{artist}}: {{title}} {{duration(position)}}/{{duration(mpris:length)}}')"
+        printf "%s  %s\n" "${icon}" "${status}"
+    else
+        printf "\n"
+        exit 0
+    fi
+    sleep 1
+done
+

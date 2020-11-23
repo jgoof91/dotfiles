@@ -18,6 +18,7 @@ alias rule="sudo nft list ruleset"
 alias failed='grep -hi 'invalid' /var/log/auth.log'
 alias dps='docker ps'
 alias f="find . -type f | fzf"
+alias wget="wget --hsts-file ~/.cache/wget-hsts"
 
 #shutdown and reboot
 alias shutdown='doas /sbin/shutdown -h now'
@@ -47,6 +48,6 @@ alias emake="doas ${EDITOR} /etc/portage/make.conf"
 alias rem="doas emerge --ask --depclean"
 alias portup="doas emerge --ask --oneshot --quiet sys-apps/portage"
 alias update="doas emerge --sync"
-alias upgrade="doas emerge --ask --update --newuse --deep @world"
+alias upgrade="doas emerge --ask --quiet --update --newuse --deep @world"
 alias qupgrade="upgrade --quiet"
 alias search="emerge -S"

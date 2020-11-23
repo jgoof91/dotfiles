@@ -1,3 +1,2 @@
-neomutt/.config/neomutt/accounts/*
-neomutt/.config/neomutt/pass.gpg
-neomutt*
+account.neomuttrc
+notmuch.neomuttrc

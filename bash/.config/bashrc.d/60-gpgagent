@@ -1,0 +1,5 @@
+pidof -x "gpg-agent" &>/dev/null || {
+    gpg-agent --daemon --homedir "${GNUPGHOME}" --enable-ssh-support
+    gpg-connect-agent /bye
+    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+} &>/dev/null

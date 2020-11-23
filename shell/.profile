@@ -3,11 +3,6 @@ export TERMINAL="alacritty"
 export FILE="vifm"
 export BROWSER="firefox-bin"
 export PAGER="less"
-export EDITOR="nvim"
-export VISUAL="${EDITOR}"
-export GIT_EDITOR="${EDITOR}"
-export STOW_DIR="${HOME}/.dotfiles"
-export INPUTRC="${HOME}/.config/inputrc"
 export LESSHISTFILE=""
 export FZF_DEFAULT_OPTS="-i"
 
@@ -20,6 +15,11 @@ export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_DATA_HOME="${HOME}/.local/share"
 export XDG_DATA_DIRS="/usr/local/share:/usr/share/"
 export KEYTIMEOUT=1
+
+#CONFIG
+export STOW_DIR="${HOME}/.dotfiles"
+export INPUTRC="${XDG_CONFIG_HOME}/inputrc"
+export GNUPGHOME="${XDG_CONFIG_HOME}/gnupg"
 
 #Perl
 export PATH="/home/jonah/.local/lib/perl5/bin${PATH:+:${PATH}}"
@@ -57,5 +57,17 @@ for editor in nvim vim emacs vi nano; do
         fi
 done
 
-[ -d ~/.local/bin ] && export PATH="${HOME}/.local/bin:${PATH}"
+[ -d ~/.local/bin ] && export PATH="${HOME}/.local/bin:${HOME}/.local/bin/polybar/:${PATH}"
 [ -d ~/.cargo/bin ] && export PATH="${HOME}/.cargo/bin:${PATH}"
+
+##AUTOSTART
+#gpg-agent with ssh support
+# pidof -x "gpg-agent" &>/dev/null || {
+    # gpg-agent --daemon --homedir "${GNUPGHOME}" --enable-ssh-support
+    # gpg-connect-agent /bye
+    # export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+# } &>/dev/null
+
+#syncthing
+# pidof -x "syncthing" &>/dev/null || setsid -f syncthing --no-browser &>/dev/null
+

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+img="$(playerctl --player=spotifyd metadata --format "{{mpris:artUrl}}")"
+[ -n "${img}" ] && curl --silent -o /tmp/song "${img}"
+
+notify-send "$(playerctl --player=spotifyd metadata --format "Title: {{title}}
+Album: {{album}}
+Artist: {{artist}}")" \
+    -i /tmp/song

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+case "${1}" in
+    left)
+        setsid -f $TERMINAL -e doas upgrade
+        exit
+        ;;
+    middle)
+        setsid -f $TERMINAL -e eix --installed --upgrade
+        exit
+        ;;
+    right)
+        setsid -f $TERMINAL -e nvim "${0}"
+        exit
+        ;;
+
+esac
+
+icon=""
+
+printf "%s %s/%s" "${icon}" "$(eix --installed --upgrade | perl -ne 'print $1 if /Found (\d*) matches/')" "$(eix --installed | perl -ne 'print $1 if /Found (\d+) matches/')"

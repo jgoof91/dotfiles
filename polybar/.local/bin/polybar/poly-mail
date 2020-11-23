@@ -1,0 +1,16 @@
+#!/bin/sh
+
+case "${1}" in
+    left)
+        setsid -f "$TERMINAL" -e neomutt 
+        ;;
+    right)
+        setsid -f "$TERMINAL" -e mailsync >/dev/null
+        ;;
+esac
+
+new="$(notmuch search tag:new | wc -l)"
+unread="$(notmuch search tag:unread | wc -l)"
+total="$(notmuch search tag:hotmail or tag:gmail or tag:grim | wc -l)"
+icon="﯍"
+printf '%s %s %s %s' "${icon}" "${new}" "${unread}" "${total}"

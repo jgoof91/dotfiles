@@ -1,0 +1,50 @@
+mkcd() {
+    mkdir -p "${1}" && cd "${1}"
+}
+
+upd() {
+    local pat='../'
+    local course=''
+    local i="${1}"
+    while ((i > 0)); do
+        course="${course}${pat}"
+        i=$((i-1))
+    done
+    cd "${course}"
+}
+
+archive() {
+    local archive_name="${1}"
+    shift
+    [[ -z "${archive_name##*\.}" ]] && archive_name="${archive_name}.tar.gz"
+    tar -czvf "${archive_name}" "${@}"
+}
+
+extract() {
+    for archive in "$@"; do
+        if [[ -f "${archive}" ]]; then
+            case "${archive}" in
+                *.tar*) tar xvf "${archive}" ;;
+                *.rar) rar x "${archive}" ;;
+                *.bz2) bunzip  "${archive}" ;;
+                *.gz) gunzip "${archive}" ;;
+                *.zip) unzip "${archive}" ;;
+                *.Z) uncompress "${archive}" ;;
+                *.7z)  7z x "${archive}" ;;
+                *) printf "don't know now to extract '%s'\n" "${archive}"
+            esac
+        fi
+    done
+}
+
+viw() {
+    ${EDITOR} "$(which "${1}")"
+}
+
+dug() {
+    du -hx "${USENET_PATH}" 2>/dev/null | grep -P '[\d.]+G' | sort -h
+}
+
+fzf_edit() {
+    $1 $(find . -type f | fzf -i -m --prompt='Files to edit: ')
+}

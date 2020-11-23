@@ -1,0 +1,26 @@
+#!/bin/sh
+
+
+case "$1" in
+    hotmail)
+        mailbox='hotmail'
+        ;;
+    gmail)
+        mailbox='gmail'
+        notify-send "Syncing mail for gmail"
+        ;;
+    grim)
+        mailbox='grim'
+        notify-send "Syncing mail for grim"
+        ;;
+    *)
+        mailbox='-a'
+        notify-send "Syncing mail for all mailboxs"
+        ;;
+esac
+
+mbsync "${mailbox}"
+notmuch new 
+notmuch new >/dev/null
+notify-send "Syncing mail for ${mailbox}
+new: $(notmuch search tag:new | wc -l) unread $(notmuch search tag:unread | wc -l) total $(notmuch search tag:inbox | wc -l)"

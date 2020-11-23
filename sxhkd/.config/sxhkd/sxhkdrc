@@ -9,14 +9,16 @@ super + e
     $TERMINAL -e neomutt
 super + t
     $TERMINAL -e htop
+super + backslash
+    nextsong
 super + b
    firefox-bin
 super + w
     rofi -modi window -show window
 super + {_,shift +}BackSpace
     {prompt "Reboot Yes/No" "doas /sbin/reboot",prompt "Shutdown Yes/No" "doas /sbin/shutdown -h now"}
-super + m
-    startmusic
+super + {m,shift + M}
+    {startspotifyd,killall -e spotifyd}
 XF86Audio{Raise,Lower}Volume
     amixer -M set Master 5%{+,-}
 XF86AudioMute
@@ -25,31 +27,71 @@ XF86Audio{Next,Prev,Play}
     playerctl {next,previous,play-pause}
 
 #BSPWM
-#Move focused
+#Switch or Swap focus node
 super + {_,shift +}{h,j,k,l}
     bspc node -{f,s} {west,south,north,east}
+
+#Switch to the prev or nect desktop
 super + {g,semicolon}
     bspc desktop {prev,next}.occupied --focus
+
+alt + {_,shift} + Tab
+    bspc node -f {next,prev}.active
+
+#Switch to desktop or Move the focus node to the desktop
 super + {_,shift +}{1-9}
     bspc {desktop -f,node -d} '^{1-9}'
 
-#Preselect
+#Expanse the focus node
 super + ctrl + {h,j,k,l}
+    bspc node -z {left -20 0, bottom 0 20, top 0 -20, right 20 0}
+
+#Contract the focus node
+super + ctrl + shift + {h,j,k,l}
+    bspc node -z {right -20 0, top 0 20, bottom 0 -20, left 20 0}
+
+#Set node flags
+ctrl + alt + {j,k,l,semicolon}
+    bspc node -g {sticky,private,locked,marked}
+
+#Set node state
+ctrl + alt {t,y,g,h}
+    bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+#Set node parent rotation
+ctrl + alt + {_,shift +} r 
+    bspc node @parent -R {180,270}
+
+#Set node parent flip
+ctrl + alt + {_,shift +} f
+    bspc node @parent -F {horizontal,vertical}
+
+#Move floating node
+super + {Left,Down,Up,Right}
+    bspc node -v {-20 0, 0 20, 0 -20, 20 0}
+
+#Preselect
+super + alt + {h,j,k,l}
     bspc node -p {west,south,north,east}
-super + ctrl + {1,9}
+
+super + alt + {1-9}
     bspc node -o 0.{1-9}
-super + ctrl + space
+
+super + alt + space
     bspc node -p cancel
 
 #To hide and Unhide all
 super + {_,shift} v
     {bspc node -g hidden,bspc query -N -n .hidden | xargs -I winID bspc node winID -g hidden=off}
+
 #To close or kill
 super + {_,shift +}x
     bspc node -{c,k}
+
 #To quit out of bspwm
 super + q
     bspc quit
+
 #To restart SXHKD or BSPWM
 super + {_,shift +} r
     {pkill -USR1 -x sxhkd,~/.config/bspwm/bspwmrc}

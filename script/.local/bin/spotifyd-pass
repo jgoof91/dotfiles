@@ -1,0 +1,27 @@
+#!/bin/sh
+
+pass=~/.config/spotifyd/spotifyd.gpg
+
+if [ -n "$(gpg-connect-agent 'keyinfo --list' /bye | awk '/^S/{if($7==1){print "CACHE"}}')" ]; then
+    gpg -dq "${pass}" 2>/dev/null
+else
+    case "$(tty)" in
+        /dev/tty[1-9]*)
+        gpg \
+            --pinentry-mode ask \
+            -dq "${pass}" 2>/dev/null
+        ;;
+        *)
+            rofi \
+                -dmenu \
+                -password \
+                -l 0 \
+                -p Spotifyd | \
+                gpg \
+                --batch \
+                --pinentry-mode loopback \
+                --passphrase-fd 0 \
+                -dq "${pass}" 2>/dev/null
+        ;;
+    esac
+fi
